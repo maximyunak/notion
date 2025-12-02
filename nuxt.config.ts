@@ -3,8 +3,8 @@ export default defineNuxtConfig({
     compatibilityDate: '2025-07-15',
     devtools: {enabled: true},
     modules: ['@nuxt/ui'],
-    ui:{
-        fonts:false,
+    ui: {
+        fonts: false,
         theme: {
             defaultVariants: {
                 color: 'neutral',
@@ -13,4 +13,13 @@ export default defineNuxtConfig({
         }
     },
     css: ['~/assets/css/main.css'],
+
+    app: {
+        head: {
+            title: 'Notion', // default fallback title
+            link: [{rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'}],
+        },
+        pageTransition: {name: 'page', mode: 'out-in'},
+        layoutTransition: {name: 'page', mode: 'out-in'},
+    },
 })

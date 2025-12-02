@@ -1,7 +1,5 @@
 <template>
-  <UApp>
-    <UButton>
-      sdfsdsfd
-    </UButton>
-  </UApp>
+  <NuxtLayout>
+    <NuxtPage/>
+  </NuxtLayout>
 </template>
