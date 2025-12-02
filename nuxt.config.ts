@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
     compatibilityDate: '2025-07-15',
     devtools: {enabled: true},
-    modules: ['@nuxt/ui'],
+    modules: ['@nuxt/ui', '@pinia/nuxt'],
     ui: {
         fonts: false,
         theme: {
@@ -16,7 +16,7 @@ export default defineNuxtConfig({
 
     app: {
         head: {
-            title: 'Notion', // default fallback title
+            title: 'Notion',
             link: [{rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'}],
         },
         pageTransition: {name: 'page', mode: 'out-in'},

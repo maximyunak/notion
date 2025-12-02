@@ -1,6 +1,7 @@
-interface TreeNode {
+export interface TreeNode {
     id: string;
     label: string;
-    type: 'folder' | 'file'
+    type: 'folder' | 'file',
+    open: boolean;
     children?: TreeNode[];
 }
