@@ -4,8 +4,7 @@
 
 <template>
   <div>
-    <NuxtLink to="/adffd">dfa</NuxtLink>
-
+    <NuxtLink to="/">dfs</NuxtLink>
   </div>
 </template>
 

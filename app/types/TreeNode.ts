@@ -2,6 +2,6 @@ export interface TreeNode {
     id: string;
     label: string;
     type: 'folder' | 'file',
-    open: boolean;
+    open?: boolean;
     children?: TreeNode[];
 }

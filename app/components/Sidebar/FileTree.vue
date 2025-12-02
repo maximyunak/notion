@@ -7,27 +7,55 @@ defineProps<{ nodes: TreeNode[] }>()
 const toggleNode = (node: TreeNode): void => {
   node.open = !node.open;
 }
+
+const hoveredArrow = ref<string | null>(null)
+
 </script>
 
 <template>
+
   <div class="ml-1" v-for="node in nodes" :key="node.id">
-    <div
+    <NuxtLink
+        :to="`/${node.id}`"
         :class="{
           active: node.id === 'file-2',
         }"
-        @click="toggleNode(node)"
+        @mouseenter="hoveredArrow=node.id"
+        @mouseleave="hoveredArrow=null"
         class="relative flex flex-row items-center justify-between w-full font-medium text-sm px-2.5 py-1.5 hover:bg-elevated cursor-pointer rounded-md text-white transition-colors">
-      <span>{{ node.label }}</span>
-      <UIcon name="i-lucide:chevron-down" class="transition-transform" :class="{
-        'rotate-180': node.open,
-      }"
-             v-if="node.children"
-      />
-    </div>
+
+      <!--   название   -->
+      <div class="flex items-center gap-2">
+
+        <!--    кнопка раскрытия/иконки файла    -->
+        <div class="relative flex flex-row items-center">
+          <UButton
+              v-if="hoveredArrow === node.id"
+              class="size-6"
+              variant="subtle"
+              @click.prevent="toggleNode(node)"
+          >
+            <UIcon name="i-lucide:chevron-down" :class="{ 'rotate-180': node.open }"
+                   class=" transition-transform size-4 absolute bottom-1/2 right-1/2 translate-1/2"></UIcon>
+          </UButton>
+          <UButton variant="ghost" v-if="hoveredArrow===null" class="size-6" icon="mdi:file-document"/>
+        </div>
+        <span>{{ node.label }}</span>
+      </div>
+
+      <!--   создание   -->
+      <Transition mode="out-in">
+        <div class="flex items-center gap-2 max-h-6" v-if="hoveredArrow === node.id">
+          <UButton variant="ghost" icon="mdi:dots-vertical"/>
+          <UButton variant="ghost" icon="material-symbols:add"/>
+        </div>
+      </Transition>
+    </NuxtLink>
 
     <Transition name="collapse" mode="out-in">
       <div class="ml-3 border-s border-default isolate" v-if="node.open">
         <SidebarFileTree :nodes="node.children" v-if="node.children"/>
+        <span v-else class="text-sm pl-8 text-muted">Nothing</span>
       </div>
     </Transition>
 
@@ -35,11 +63,17 @@ const toggleNode = (node: TreeNode): void => {
 
 </template>
 
-<style scoped>
+<style>
 
 .active {
   background: var(--ui-bg-elevated);
 }
+
+button:hover {
+  background: var(--ui-bg-accented) !important;
+}
+
+
 
 .collapse-enter-from,
 .collapse-leave-to {
