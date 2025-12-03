@@ -1,69 +1,14 @@
 {
   "pages": [
     {
-      "id": "fds",
-      "label": "parent"
-    },
-    {
-      "id": "644b",
-      "parentId": "fds",
-      "label": "Untitled"
-    },
-    {
-      "id": "7706",
-      "parentId": "644b",
-      "label": "Untitled"
-    },
-    {
-      "id": "1fdd",
-      "parentId": "7706",
-      "label": "Untitled"
-    },
-    {
-      "id": "61b5",
-      "parentId": "1fdd",
-      "label": "Untitled"
-    },
-    {
-      "id": "4f0a",
-      "parentId": "644b",
-      "label": "Untitled"
-    },
-    {
-      "id": "355b",
-      "parentId": "4f0a",
-      "label": "Untitled"
-    },
-    {
-      "id": "3517",
-      "parentId": "355b",
-      "label": "Untitled"
-    },
-    {
-      "id": "1534",
-      "parentId": "644b",
-      "label": "Untitled"
-    },
-    {
-      "id": "4ad6",
-      "parentId": "fds",
-      "label": "Untitled"
-    },
-    {
-      "id": "29bb",
-      "parentId": "4ad6",
-      "label": "Untitled"
-    },
-    {
-      "id": "b617",
-      "parentId": "29bb",
+      "id": "76b1",
       "label": "Untitled"
     }
   ],
   "content": [
     {
-      "id": "fds",
-      "content": "dsaasfkjadsfkl;jdsklv adsflajdsf as;d afdsjakld asdkjf akldsjf a;lsdjf;als kd"
+      "id": "76b1",
+      "content": ""
     }
   ]
 }

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 
 import type {TreeNode} from "~/types/TreeNode";
+import type {DropdownMenuItem} from "#ui/components/DropdownMenu.vue";
 
 defineProps<{ nodes: TreeNode[] }>()
 
@@ -12,13 +13,23 @@ const toggleNode = (node: TreeNode): void => {
 
 const hoveredArrow = ref<Record<string, boolean>>({})
 
-const create = (parentId: string) => {
+const createPage = (parentId: string) => {
   store.createPage({}, parentId)
 }
 
+const route = useRoute()
+const router = useRouter()
+
+const deletePage = (nodeId: string) => {
+  store.deletePage(nodeId)
+  if (!findNode(route.params.id as string, store.fileTree)) {
+    router.push('/');
+  }
+}
+
 </script>
-<!--        @mouseenter="hoveredArrow=node.id"-->
-<!--        @mouseleave="hoveredArrow=null"-->
+
+
 <template>
 
   <div class="ml-1" v-for="node in nodes" :key="node.id">
@@ -49,11 +60,13 @@ const create = (parentId: string) => {
         <span>{{ node.label }}</span>
       </div>
 
-      <!--   создание   -->
+      <!--   кнопки справа   -->
       <Transition mode="out-in">
         <div class="flex items-center gap-2 max-h-6" v-if="hoveredArrow[node.id]">
-          <UButton variant="ghost" icon="mdi:dots-vertical"/>
-          <UButton variant="ghost" icon="material-symbols:add" @click.prevent="create(node.id)"/>
+          <UButton variant="ghost" icon="material-symbols:delete" @click.prevent="deletePage(node.id)"/>
+
+          <!--   создание   -->
+          <UButton variant="ghost" icon="material-symbols:add" @click.prevent="createPage(node.id)"/>
         </div>
       </Transition>
     </NuxtLink>
@@ -64,7 +77,6 @@ const create = (parentId: string) => {
         <span v-else class="text-sm pl-8 text-muted">Nothing</span>
       </div>
     </Transition>
-
   </div>
 
 </template>
