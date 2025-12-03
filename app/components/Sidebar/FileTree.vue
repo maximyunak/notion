@@ -10,26 +10,24 @@ const toggleNode = (node: TreeNode): void => {
   node.open = !node.open;
 }
 
-const hoveredArrow = ref<string | null>(null)
+const hoveredArrow = ref<Record<string, boolean>>({})
 
-const create = () => {
-  const data = {
-    label: 'page',
-  }
-
-  store.createPage(1, data);
+const create = (parentId: string) => {
+  store.createPage({}, parentId)
 }
 
 </script>
-
+<!--        @mouseenter="hoveredArrow=node.id"-->
+<!--        @mouseleave="hoveredArrow=null"-->
 <template>
 
   <div class="ml-1" v-for="node in nodes" :key="node.id">
     <NuxtLink
         :to="`/${node.id}`"
         active-class="active"
-        @mouseenter="hoveredArrow=node.id"
-        @mouseleave="hoveredArrow=null"
+        @mouseenter="hoveredArrow[node.id] = true"
+        @mouseleave="hoveredArrow[node.id] = false"
+
         class="relative flex flex-row items-center justify-between w-full font-medium text-sm px-2.5 py-1.5 hover:bg-elevated cursor-pointer rounded-md text-white transition-colors">
 
       <!--   название   -->
@@ -38,7 +36,7 @@ const create = () => {
         <!--    кнопка раскрытия/иконки файла    -->
         <div class="relative flex flex-row items-center">
           <UButton
-              v-if="hoveredArrow === node.id"
+              v-if="hoveredArrow[node.id]"
               class="size-6"
               variant="subtle"
               @click.prevent="toggleNode(node)"
@@ -46,16 +44,16 @@ const create = () => {
             <UIcon name="i-lucide:chevron-down" :class="{ 'rotate-180': node.open }"
                    class=" transition-transform size-4 absolute bottom-1/2 right-1/2 translate-1/2"></UIcon>
           </UButton>
-          <UButton variant="ghost" v-if="hoveredArrow===null" class="size-6" icon="mdi:file-document"/>
+          <UButton variant="ghost" v-else class="size-6" icon="mdi:file-document"/>
         </div>
         <span>{{ node.label }}</span>
       </div>
 
       <!--   создание   -->
       <Transition mode="out-in">
-        <div class="flex items-center gap-2 max-h-6" v-if="hoveredArrow === node.id">
+        <div class="flex items-center gap-2 max-h-6" v-if="hoveredArrow[node.id]">
           <UButton variant="ghost" icon="mdi:dots-vertical"/>
-          <UButton variant="ghost" icon="material-symbols:add" @click.prevent="create"/>
+          <UButton variant="ghost" icon="material-symbols:add" @click.prevent="create(node.id)"/>
         </div>
       </Transition>
     </NuxtLink>
