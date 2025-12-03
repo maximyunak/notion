@@ -1,3 +1,13 @@
 {
-  "file-tree": []
+  "pages": [
+    {
+      "id": "fds",
+      "label": "parent"
+    },
+    {
+      "id": "sss",
+      "label": "child",
+      "parentId": "fds"
+    }
+  ]
 }

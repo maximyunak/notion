@@ -1,24 +1,27 @@
-import type {TreeNode} from '~/types/TreeNode'
-import type {NavigationMenuItem} from "@nuxt/ui";
+import type {FlatTreeNode, TreeNode} from '~/types/TreeNode'
 
 export const useFileStore = defineStore('fileStore', () => {
-    const fileTree = ref<TreeNode[]>([
-            {
-                id: 'ds',
-                label: 'folder',
-                open: true,
-                type: 'folder',
-                children: [
-                    {
-                        id: 'sdfsdf',
-                        label: 'file',
-                        type: 'file',
-                    }
-                ]
-            }
-        ]
-    )
+    const fileTree = ref<TreeNode[]>([]);
+
+    const fetchPages = async () => {
+        const res = await $api<FlatTreeNode[]>('/pages')
+
+        fileTree.value = buildTree(res)
+    }
+
+    const createPage = async (parentId: null | string, pageData: Partial<FlatTreeNode>) => {
+        const body = {
+            ...pageData,
+            open: false,
+            parentId,
+        }
+
+        return await $api('/pages', {
+            method: 'post',
+            body: body,
+        })
+    };
 
 
-    return {fileTree}
+    return {fileTree, createPage, fetchPages}
 })

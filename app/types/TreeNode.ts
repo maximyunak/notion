@@ -1,7 +1,13 @@
 export interface TreeNode {
     id: string;
     label: string;
-    type: 'folder' | 'file',
-    open?: boolean;
-    children?: TreeNode[];
+    open: boolean;
+    children: TreeNode[];
+    parentId?: string;
+}
+
+export interface FlatTreeNode {
+    id: string;
+    label: string;
+    parentId?: string;
 }

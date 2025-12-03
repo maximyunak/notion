@@ -4,11 +4,21 @@ import type {TreeNode} from "~/types/TreeNode";
 
 defineProps<{ nodes: TreeNode[] }>()
 
+const store = useFileStore()
+
 const toggleNode = (node: TreeNode): void => {
   node.open = !node.open;
 }
 
 const hoveredArrow = ref<string | null>(null)
+
+const create = () => {
+  const data = {
+    label: 'page',
+  }
+
+  store.createPage(1, data);
+}
 
 </script>
 
@@ -17,9 +27,7 @@ const hoveredArrow = ref<string | null>(null)
   <div class="ml-1" v-for="node in nodes" :key="node.id">
     <NuxtLink
         :to="`/${node.id}`"
-        :class="{
-          active: node.id === 'file-2',
-        }"
+        active-class="active"
         @mouseenter="hoveredArrow=node.id"
         @mouseleave="hoveredArrow=null"
         class="relative flex flex-row items-center justify-between w-full font-medium text-sm px-2.5 py-1.5 hover:bg-elevated cursor-pointer rounded-md text-white transition-colors">
@@ -47,14 +55,14 @@ const hoveredArrow = ref<string | null>(null)
       <Transition mode="out-in">
         <div class="flex items-center gap-2 max-h-6" v-if="hoveredArrow === node.id">
           <UButton variant="ghost" icon="mdi:dots-vertical"/>
-          <UButton variant="ghost" icon="material-symbols:add"/>
+          <UButton variant="ghost" icon="material-symbols:add" @click.prevent="create"/>
         </div>
       </Transition>
     </NuxtLink>
 
     <Transition name="collapse" mode="out-in">
       <div class="ml-3 border-s border-default isolate" v-if="node.open">
-        <SidebarFileTree :nodes="node.children" v-if="node.children"/>
+        <SidebarFileTree :nodes="node.children" v-if="node.children.length"/>
         <span v-else class="text-sm pl-8 text-muted">Nothing</span>
       </div>
     </Transition>
@@ -72,7 +80,6 @@ const hoveredArrow = ref<string | null>(null)
 button:hover {
   background: var(--ui-bg-accented) !important;
 }
-
 
 
 .collapse-enter-from,

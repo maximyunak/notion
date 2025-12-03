@@ -1,28 +1,25 @@
 <script setup lang="ts">
-import type {NavigationMenuItem} from '@nuxt/ui'
-import FileTree from "~/components/Sidebar/FileTree.vue";
-
 const store = useFileStore()
 
-
+await store.fetchPages()
 </script>
 
 <template>
-  <UDashboardSidebar collapsible :ui="{ footer: 'border-t border-default' }">
-    <template #header="{ collapsed }">
+
+  <UDashboardSidebar :ui="{ footer: 'border-t border-default' }">
+    <template #header>
       <UIcon name="devicon-plain:nuxt-wordmark" class="size-20 text-primary mx-auto"/>
     </template>
 
-    <template #default="{ collapsed }">
+    <template #default>
       <UButton
-          :label="collapsed ? undefined : 'Search...'"
+          label='Search...'
           icon="i-lucide-search"
           color="neutral"
           variant="outline"
           block
-          :square="collapsed"
       >
-        <template v-if="!collapsed" #trailing>
+        <template #trailing>
           <div class="flex items-center gap-0.5 ms-auto">
             <UKbd value="meta" variant="subtle"/>
             <UKbd value="K" variant="subtle"/>
@@ -30,18 +27,10 @@ const store = useFileStore()
         </template>
       </UButton>
 
-
       <div class="flex flex-col">
-        <SidebarFileTree :nodes="store.fileTree"/>
+        <SidebarFileTree v-if="store.fileTree?.length > 0" :nodes="store.fileTree"/>
       </div>
     </template>
 
   </UDashboardSidebar>
 </template>
-
-<!--      <UNavigationMenu-->
-<!--          :collapsed="collapsed"-->
-<!--          :items="store.items"-->
-<!--          orientation="vertical"-->
-<!--      />-->
-
