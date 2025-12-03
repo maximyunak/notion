@@ -3,12 +3,12 @@
 </script>
 
 <template>
-  <div class="flex">
+  <div class="flex w-screen">
 
     <UApp>
       <Sidebar/>
-      <main>
-        <div class="px-15">
+      <main class="w-full ml-[20%] mt-20">
+        <div class="px-10 w-full h-full">
           <slot/>
         </div>
       </main>

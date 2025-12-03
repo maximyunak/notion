@@ -1,0 +1,14 @@
+export interface PageContent {
+    id: string;
+    content: string;
+    blocks: ContentBlock[]
+}
+
+export interface ContentBlock {
+    id: string;
+    position: number;
+    type: BlockType
+    value: string
+}
+
+export type BlockType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'text' | 'image' | 'table' | 'link' | 'youtube';

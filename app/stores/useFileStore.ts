@@ -1,5 +1,6 @@
-import type {FlatTreeNode, PageContent, TreeNode} from '~/types/TreeNode'
+import type {FlatTreeNode, TreeNode} from '~/types/TreeNode'
 import {findNode} from "~/utils/find-node";
+import type {PageContent} from "~/types/PageContent";
 
 export const useFileStore = defineStore('fileStore', () => {
     const fileTree = ref<TreeNode[]>([]);
@@ -13,7 +14,7 @@ export const useFileStore = defineStore('fileStore', () => {
     const getPageContent = async (id: string) => {
         const page = await $api<FlatTreeNode>(`/pages/${id}`);
         const content = await $api<PageContent>(`content/${id}`).catch(() => ({
-            id, content: ''
+            id, content: '', blocks: []
         }))
 
         return {
@@ -50,7 +51,7 @@ export const useFileStore = defineStore('fileStore', () => {
             fileTree.value.push({...res, open: true, children: []})
         }
 
-        return
+        return res.id
     };
 
     const deletePage = async (id: string) => {

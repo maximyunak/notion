@@ -1,10 +1,11 @@
 <script setup lang="ts">
 
 import type {TreeNode} from "~/types/TreeNode";
-import type {DropdownMenuItem} from "#ui/components/DropdownMenu.vue";
 
 defineProps<{ nodes: TreeNode[] }>()
 
+const route = useRoute()
+const router = useRouter()
 const store = useFileStore()
 
 const toggleNode = (node: TreeNode): void => {
@@ -13,12 +14,11 @@ const toggleNode = (node: TreeNode): void => {
 
 const hoveredArrow = ref<Record<string, boolean>>({})
 
-const createPage = (parentId: string) => {
-  store.createPage({}, parentId)
-}
+const createPage = async (parentId: string) => {
+  const newPageId = await store.createPage({}, parentId)
 
-const route = useRoute()
-const router = useRouter()
+  router.push(`/${newPageId}`)
+}
 
 const deletePage = (nodeId: string) => {
   store.deletePage(nodeId)
@@ -33,6 +33,7 @@ const deletePage = (nodeId: string) => {
 <template>
 
   <div class="ml-1" v-for="node in nodes" :key="node.id">
+
     <NuxtLink
         :to="`/${node.id}`"
         active-class="active"
@@ -74,7 +75,7 @@ const deletePage = (nodeId: string) => {
     <Transition name="collapse" mode="out-in">
       <div class="ml-3 border-s border-default isolate" v-if="node.open">
         <SidebarFileTree :nodes="node.children" v-if="node.children.length"/>
-        <span v-else class="text-sm pl-8 text-muted">Nothing</span>
+        <span v-else class="text-sm pl-8 text-muted block pb-1">No pages inside</span>
       </div>
     </Transition>
   </div>

@@ -4,3 +4,14 @@
 button {
     cursor: pointer;
 }
+
+*:focus {
+    outline: none;
+
+}
+
+[contenteditable]:empty:after {
+    content: attr(placeholder);
+    color: #9ca3af;
+    pointer-events: none;
+}

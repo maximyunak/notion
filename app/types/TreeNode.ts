@@ -8,8 +8,3 @@ export interface TreeNode extends FlatTreeNode {
     open: boolean;
     children: TreeNode[];
 }
-
-export interface PageContent {
-    id: string;
-    content: string;
-}
