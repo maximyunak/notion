@@ -74,6 +74,32 @@ const createContentBlock = (type: BlockType = 'text') => {
   emit("create", block);
 };
 
+const deleteOnBackspace = (e: KeyboardEvent) => {
+  if (e.key !== 'Backspace') return
+  const index = store.pageContent?.blocks.findIndex(b => b.id === block.id)
+
+  if (index === undefined || index === -1) return;
+  console.log('dd', block.value)
+
+  const el = e.target as HTMLElement;
+
+  if (el.innerText === '') {
+    e.preventDefault();
+    store.deleteContentBlock(block.id);
+    const prev = store.pageContent?.blocks[index - 1]
+    const el = document.getElementById(`block-${prev?.id}`);
+
+    if (!el) return;
+
+    const range = document.createRange();
+    range.selectNodeContents(el);
+    range.collapse(false);
+    const sel = window.getSelection();
+    sel?.removeAllRanges();
+    sel?.addRange(range);
+  }
+}
+
 </script>
 
 <template>
@@ -109,6 +135,7 @@ const createContentBlock = (type: BlockType = 'text') => {
 
     <h1 :id="`block-${block.id}`"
         @keydown.enter.prevent="()=> createContentBlock('text')"
+        @keydown="deleteOnBackspace"
         @input="$emit('empty', $event)"
         placeholder="Type anything"
         @blur="edit"
@@ -117,6 +144,7 @@ const createContentBlock = (type: BlockType = 'text') => {
 
     <h2 :id="`block-${block.id}`"
         @keydown.enter.prevent="createContentBlock('text')"
+        @keydown="deleteOnBackspace"
         @input="$emit('empty', $event)"
         placeholder="Type anything"
         @blur="edit" v-if="block.type === 'h2'"
@@ -124,6 +152,7 @@ const createContentBlock = (type: BlockType = 'text') => {
 
     <h3 :id="`block-${block.id}`"
         @keydown.enter.prevent="createContentBlock('text')"
+        @keydown="deleteOnBackspace"
         @input="$emit('empty', $event)"
         placeholder="Type anything"
         @blur="edit"
@@ -132,6 +161,7 @@ const createContentBlock = (type: BlockType = 'text') => {
 
     <h4 :id="`block-${block.id}`"
         @keydown.enter.prevent="createContentBlock('text')"
+        @keydown="deleteOnBackspace"
         @input="$emit('empty', $event)"
         placeholder="Type anything"
         @blur="edit"
@@ -140,6 +170,7 @@ const createContentBlock = (type: BlockType = 'text') => {
 
     <h5 :id="`block-${block.id}`"
         @keydown.enter.prevent="createContentBlock('text')"
+        @keydown="deleteOnBackspace"
         @input="$emit('empty', $event)"
         placeholder="Type anything"
         @blur="edit"
@@ -148,6 +179,7 @@ const createContentBlock = (type: BlockType = 'text') => {
 
     <h6 :id="`block-${block.id}`"
         @keydown.enter.prevent="createContentBlock('text')"
+        @keydown="deleteOnBackspace"
         @input="$emit('empty', $event)"
         placeholder="Type anything"
         @blur="edit"
@@ -156,6 +188,7 @@ const createContentBlock = (type: BlockType = 'text') => {
 
     <p :id="`block-${block.id}`"
        @keydown.enter.prevent="createContentBlock('text')"
+       @keydown="deleteOnBackspace"
        @input="$emit('empty', $event)"
        placeholder="Type anything"
        @blur="edit"

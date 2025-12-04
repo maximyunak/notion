@@ -9,38 +9,7 @@
     {
       "id": "76b1",
       "content": "asdfsadasdfas",
-      "blocks": [
-        {
-          "id": "vphfht",
-          "value": "dsdssfddsfsfd",
-          "type": "text",
-          "position": 1
-        },
-        {
-          "type": "text",
-          "id": "isxdu",
-          "value": "kjl",
-          "position": 1
-        },
-        {
-          "type": "h1",
-          "id": "7vg1ly",
-          "value": "",
-          "position": 1
-        },
-        {
-          "type": "text",
-          "id": "mdfngm",
-          "value": "",
-          "position": 1
-        },
-        {
-          "type": "text",
-          "id": "1z9ums",
-          "value": "",
-          "position": 1
-        }
-      ]
+      "blocks": []
     }
   ]
 }
