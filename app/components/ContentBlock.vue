@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import type {ContentBlock} from "~/types/PageContent";
+import type {BlockType, ContentBlock} from "~/types/PageContent";
 import type {DropdownMenuItem} from "#ui/components/DropdownMenu.vue";
 
 const {block} = defineProps<{ block: ContentBlock }>();
-const emit = defineEmits<{ (e: 'update', block: ContentBlock): void, (e: 'empty', event: Event): void }>();
+const emit = defineEmits<{
+  (e: 'update' | 'create', block: ContentBlock): void,
+  (e: 'empty', event: Event): void,
+}>();
 
 
 const store = useContentStore();
@@ -19,7 +22,7 @@ const edit = (event: Event) => {
   emit("update", updated);
 }
 
-const items = ref<DropdownMenuItem[]>([
+const optionItems = ref<DropdownMenuItem[]>([
   {
     label: 'delete',
     icon: 'material-symbols:delete',
@@ -30,17 +33,68 @@ const items = ref<DropdownMenuItem[]>([
   }
 ])
 
+const addItems = ref<DropdownMenuItem[]>([
+  {
+    label: 'H1',
+    onSelect: () => createContentBlock('h1'),
+  },
+  {
+    label: 'H2',
+    onSelect: () => createContentBlock('h2'),
+  },
+  {
+    label: 'H3',
+    onSelect: () => createContentBlock('h3'),
+  },
+  {
+    label: 'H4',
+    onSelect: () => createContentBlock('h4'),
+  },
+  {
+    label: 'H5',
+    onSelect: () => createContentBlock('h5'),
+  },
+  {
+    label: 'H6',
+    onSelect: () => createContentBlock('h6'),
+  },
+  {
+    label: 'Text',
+    onSelect: () => createContentBlock('text'),
+  }
+]);
+
+const createContentBlock = (type: BlockType = 'text') => {
+  const block = {
+    type: type,
+    id: Math.random().toString(36).substr(7),
+    value: '',
+    position: 1
+  } as ContentBlock
+  emit("create", block);
+};
+
 </script>
 
 <template>
   <div @mouseenter="isHover = true" @mouseleave="isHover = false" class="flex items-center relative gap-2">
 
     <div :class="isHover ? 'opacity-100' : 'opacity-0 pointer-events-none'" class="flex gap-2 w-18">
-
-      <UButton icon="material-symbols:add-2"
-               variant="ghost"/>
       <UDropdownMenu
-          :items="items"
+          :items="addItems"
+          :content="{
+            align: 'start',
+            side: 'left',
+            sideOffset: 0,
+          }"
+          :ui="{
+            content: 'w-48'
+          }">
+        <UButton icon="material-symbols:add-2"
+                 variant="ghost"/>
+      </UDropdownMenu>
+      <UDropdownMenu
+          :items="optionItems"
           :content="{
             align: 'start',
             side: 'left',
@@ -53,25 +107,59 @@ const items = ref<DropdownMenuItem[]>([
       </UDropdownMenu>
     </div>
 
-    <h1 @input="$emit('empty', $event)" placeholder="Type anything" @blur="edit" v-if="block.type === 'h1'"
+    <h1 :id="`block-${block.id}`"
+        @keydown.enter.prevent="()=> createContentBlock('text')"
+        @input="$emit('empty', $event)"
+        placeholder="Type anything"
+        @blur="edit"
+        v-if="block.type === 'h1'"
         contenteditable="true">{{ block.value }}</h1>
 
-    <h2 @input="$emit('empty', $event)" placeholder="Type anything" @blur="edit" v-if="block.type === 'h2'"
+    <h2 :id="`block-${block.id}`"
+        @keydown.enter.prevent="createContentBlock('text')"
+        @input="$emit('empty', $event)"
+        placeholder="Type anything"
+        @blur="edit" v-if="block.type === 'h2'"
         contenteditable="true">{{ block.value }}</h2>
 
-    <h3 @input="$emit('empty', $event)" placeholder="Type anything" @blur="edit" v-if="block.type === 'h3'"
+    <h3 :id="`block-${block.id}`"
+        @keydown.enter.prevent="createContentBlock('text')"
+        @input="$emit('empty', $event)"
+        placeholder="Type anything"
+        @blur="edit"
+        v-if="block.type === 'h3'"
         contenteditable="true">{{ block.value }}</h3>
 
-    <h4 @input="$emit('empty', $event)" placeholder="Type anything" @blur="edit" v-if="block.type === 'h4'"
+    <h4 :id="`block-${block.id}`"
+        @keydown.enter.prevent="createContentBlock('text')"
+        @input="$emit('empty', $event)"
+        placeholder="Type anything"
+        @blur="edit"
+        v-if="block.type === 'h4'"
         contenteditable="true">{{ block.value }}</h4>
 
-    <h5 @input="$emit('empty', $event)" placeholder="Type anything" @blur="edit" v-if="block.type === 'h5'"
+    <h5 :id="`block-${block.id}`"
+        @keydown.enter.prevent="createContentBlock('text')"
+        @input="$emit('empty', $event)"
+        placeholder="Type anything"
+        @blur="edit"
+        v-if="block.type === 'h5'"
         contenteditable="true">{{ block.value }}</h5>
 
-    <h6 @input="$emit('empty', $event)" placeholder="Type anything" @blur="edit" v-if="block.type === 'h6'"
+    <h6 :id="`block-${block.id}`"
+        @keydown.enter.prevent="createContentBlock('text')"
+        @input="$emit('empty', $event)"
+        placeholder="Type anything"
+        @blur="edit"
+        v-if="block.type === 'h6'"
         contenteditable="true">{{ block.value }}</h6>
 
-    <p @input="$emit('empty', $event)" placeholder="Type anything" @blur="edit" v-if="block.type === 'text'"
+    <p :id="`block-${block.id}`"
+       @keydown.enter.prevent="createContentBlock('text')"
+       @input="$emit('empty', $event)"
+       placeholder="Type anything"
+       @blur="edit"
+       v-if="block.type === 'text'"
        contenteditable="true">{{ block.value }}</p>
   </div>
 </template>
@@ -79,6 +167,8 @@ const items = ref<DropdownMenuItem[]>([
 <style scoped>
 div > *:not(button, div) {
   width: 100%;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
 }
 
 h1 {

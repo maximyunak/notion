@@ -27,6 +27,14 @@ const editPageTitle = (e: Event) => {
   store.editPageTitle(el.innerText);
 };
 
+
+const createContentBlock = async (block: ContentBlock) => {
+  await store.createContentBlock(block)
+  await nextTick(() => {
+    const el = document.getElementById(`block-${block.id}`);
+    if (el) el.focus();
+  })
+}
 </script>
 
 <template>
@@ -48,6 +56,7 @@ const editPageTitle = (e: Event) => {
           :block="block"
           @update="updateContent"
           @empty="onInput"
+          @create="createContentBlock"
       />
     </div>
   </div>
