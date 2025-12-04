@@ -47,6 +47,7 @@ const editPageTitle = (e: Event) => {
           v-for="block in store.pageContent?.blocks"
           :block="block"
           @update="updateContent"
+          @empty="onInput"
       />
     </div>
   </div>

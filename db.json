@@ -14,31 +14,25 @@
           "id": "sd",
           "position": 1,
           "type": "h1",
-          "value": "dfdsffdsfdsdfsfddsfdsdsfs"
+          "value": ""
         },
         {
           "id": "ssfdfdsd",
           "position": 3,
           "type": "h2",
-          "value": "h2 text"
+          "value": ""
         },
         {
           "id": "sfd",
           "position": 2,
           "type": "h4",
-          "value": "h4 test"
+          "value": ""
         },
         {
           "id": "sfdd",
           "position": 2,
           "type": "text",
-          "value": "text d"
-        },
-        {
-          "id": "sfds",
-          "position": 2,
-          "type": "text",
-          "value": "another text"
+          "value": ""
         }
       ]
     }
