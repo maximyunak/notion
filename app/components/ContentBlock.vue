@@ -1,9 +1,21 @@
 <script setup lang="ts">
 import type {ContentBlock} from "~/types/PageContent";
 
-defineProps<{ block: ContentBlock }>();
+const {block} = defineProps<{ block: ContentBlock }>();
+const emit = defineEmits<{ (e: 'update', block: ContentBlock): void }>();
 
 const isHover = ref(false);
+const store = useContentStore();
+
+const edit = (event: Event) => {
+  console.log(store.pageContent?.blocks.forEach(el => console.log(el.value)))
+  const el = event.target as HTMLElement;
+  const updated: ContentBlock = {
+    ...block,
+    value: el.innerText
+  }
+  emit("update", updated);
+}
 </script>
 
 <template>
@@ -15,7 +27,7 @@ const isHover = ref(false);
       <UButton variant="ghost" icon="teenyicons:drag-vertical-solid"/>
     </div>
 
-    <h1 v-if="block.type === 'h1'" contenteditable="true">{{ block.value }}</h1>
+    <h1 @blur="edit($event)" v-if="block.type === 'h1'" contenteditable="true">{{ block.value }}</h1>
     <h2 v-if="block.type === 'h2'" contenteditable="true">{{ block.value }}</h2>
     <h3 v-if="block.type === 'h3'" contenteditable="true">{{ block.value }}</h3>
     <h4 v-if="block.type === 'h4'" contenteditable="true">{{ block.value }}</h4>
@@ -29,6 +41,7 @@ const isHover = ref(false);
 div > *:not(button, div) {
   width: 100%;
 }
+
 h1 {
   font-size: 40px;
   font-weight: 700;
