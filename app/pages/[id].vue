@@ -1,5 +1,5 @@
 <script setup lang="ts">
-
+import draggable from "vuedraggable";
 import type {FlatTreeNode} from "~/types/TreeNode";
 import type {ContentBlock, PageContent} from "~/types/PageContent";
 
@@ -35,6 +35,7 @@ const createContentBlock = async (block: ContentBlock) => {
     if (el) el.focus();
   })
 }
+
 </script>
 
 <template>
@@ -51,13 +52,23 @@ const createContentBlock = async (block: ContentBlock) => {
       {{ store?.pageData?.label }}
     </h1>
     <div class="w-full h-full mt-10">
-      <ContentBlock
-          v-for="block in store.pageContent?.blocks"
-          :block="block"
-          @update="updateContent"
-          @empty="onInput"
-          @create="createContentBlock"
-      />
+      <draggable
+          v-if="store.pageContent"
+          :list="store.pageContent.blocks"
+          item-key="id"
+          @dragend="store.savePositions()"
+          handle=".drag-handle"
+      >
+        <template #item="{ element }">
+          <ContentBlock
+              :block="element"
+              @update="updateContent"
+              @empty="onInput"
+              @create="createContentBlock"
+          />
+        </template>
+      </draggable>
+
     </div>
   </div>
 </template>

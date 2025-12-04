@@ -6,7 +6,6 @@ export interface PageContent {
 
 export interface ContentBlock {
     id: string;
-    position: number;
     type: BlockType
     value: string
 }

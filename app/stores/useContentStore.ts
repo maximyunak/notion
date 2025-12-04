@@ -73,6 +73,17 @@ export const useContentStore = defineStore('contentStore', () => {
         })
     }
 
+    const savePositions = async () => {
+        if (!pageContent.value) return
+
+        await $api(`content/${pageContent.value.id}`, {
+            method: 'patch',
+            body: {
+                blocks: pageContent.value.blocks
+            }
+        })
+    }
+
     return {
         pageContent,
         pageData,
@@ -80,6 +91,7 @@ export const useContentStore = defineStore('contentStore', () => {
         updatePageContent,
         editPageTitle,
         deleteContentBlock,
-        createContentBlock
+        createContentBlock,
+        savePositions
     }
 })

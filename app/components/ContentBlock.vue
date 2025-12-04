@@ -68,8 +68,7 @@ const createContentBlock = (type: BlockType = 'text') => {
   const block = {
     type: type,
     id: Math.random().toString(36).substr(7),
-    value: '',
-    position: 1
+    value: ''
   } as ContentBlock
   emit("create", block);
 };
@@ -129,7 +128,9 @@ const deleteOnBackspace = (e: KeyboardEvent) => {
           :ui="{
             content: 'w-48'
           }">
-        <UButton variant="ghost" icon="teenyicons:drag-vertical-solid"/>
+        <UButton variant="ghost"
+                 class="drag-handle cursor-grab active:cursor-grabbing"
+                 icon="teenyicons:drag-vertical-solid"/>
       </UDropdownMenu>
     </div>
 
