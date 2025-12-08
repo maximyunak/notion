@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import draggable from "vuedraggable";
 
 import type {TreeNode} from "~/types/TreeNode";
 
@@ -32,53 +33,63 @@ const deletePage = (nodeId: string) => {
 
 <template>
 
-  <div class="ml-1" v-for="node in nodes" :key="node.id">
+  <draggable
+      :list="nodes"
+      :group="{ name: 'g1' }"
+      animation="150"
+      item-key="id"
+      ghost-class="opacity-50"
+  >
+    <template #item="{element}">
+      <div>
 
-    <NuxtLink
-        :to="`/${node.id}`"
-        active-class="active"
-        @mouseenter="hoveredArrow[node.id] = true"
-        @mouseleave="hoveredArrow[node.id] = false"
+        <NuxtLink
+            :to="`/${element.id}`"
+            active-class="active"
+            @mouseenter="hoveredArrow[element.id] = true"
+            @mouseleave="hoveredArrow[element.id] = false"
 
-        class="relative flex flex-row items-center justify-between w-full font-medium text-sm px-2.5 py-1.5 hover:bg-elevated cursor-pointer rounded-md text-white transition-colors">
+            class="relative flex flex-row items-center justify-between w-full font-medium text-sm px-2.5 py-1.5 hover:bg-elevated cursor-pointer rounded-md text-white transition-colors">
 
-      <!--   название   -->
-      <div class="flex items-center gap-2">
+          <!--   название   -->
+          <div class="flex items-center gap-2">
 
-        <!--    кнопка раскрытия/иконки файла    -->
-        <div class="relative flex flex-row items-center">
-          <UButton
-              v-if="hoveredArrow[node.id]"
-              class="size-6"
-              variant="subtle"
-              @click.prevent="toggleNode(node)"
-          >
-            <UIcon name="i-lucide:chevron-down" :class="{ 'rotate-180': node.open }"
-                   class=" transition-transform size-4 absolute bottom-1/2 right-1/2 translate-1/2"></UIcon>
-          </UButton>
-          <UButton variant="ghost" v-else class="size-6" icon="mdi:file-document"/>
-        </div>
-        <span>{{ node.label }}</span>
+            <!--    кнопка раскрытия/иконки файла    -->
+            <div class="relative flex flex-row items-center">
+              <UButton
+                  v-if="hoveredArrow[element.id]"
+                  class="size-6"
+                  variant="subtle"
+                  @click.prevent="toggleNode(element)"
+              >
+                <UIcon name="i-lucide:chevron-down" :class="{ 'rotate-180': element.open }"
+                       class=" transition-transform size-4 absolute bottom-1/2 right-1/2 translate-1/2"></UIcon>
+              </UButton>
+              <UButton variant="ghost" v-else class="size-6" icon="mdi:file-document"/>
+            </div>
+            <span>{{ element.label }}</span>
+          </div>
+
+          <!--   кнопки справа   -->
+          <Transition mode="out-in">
+            <div class="flex items-center gap-2 max-h-6" v-if="hoveredArrow[element.id]">
+              <UButton variant="ghost" icon="material-symbols:delete" @click.prevent="deletePage(element.id)"/>
+
+              <!--   создание   -->
+              <UButton variant="ghost" icon="material-symbols:add" @click.prevent="createPage(element.id)"/>
+            </div>
+          </Transition>
+        </NuxtLink>
+
+        <Transition name="collapse" mode="out-in">
+          <div class="ml-3 border-s border-default isolate" v-if="element.open">
+            <SidebarFileTree :nodes="element.children" v-if="element.children.length"/>
+            <span v-else class="text-sm pl-8 text-muted block pb-1">No pages inside</span>
+          </div>
+        </Transition>
       </div>
-
-      <!--   кнопки справа   -->
-      <Transition mode="out-in">
-        <div class="flex items-center gap-2 max-h-6" v-if="hoveredArrow[node.id]">
-          <UButton variant="ghost" icon="material-symbols:delete" @click.prevent="deletePage(node.id)"/>
-
-          <!--   создание   -->
-          <UButton variant="ghost" icon="material-symbols:add" @click.prevent="createPage(node.id)"/>
-        </div>
-      </Transition>
-    </NuxtLink>
-
-    <Transition name="collapse" mode="out-in">
-      <div class="ml-3 border-s border-default isolate" v-if="node.open">
-        <SidebarFileTree :nodes="node.children" v-if="node.children.length"/>
-        <span v-else class="text-sm pl-8 text-muted block pb-1">No pages inside</span>
-      </div>
-    </Transition>
-  </div>
+    </template>
+  </draggable>
 
 </template>
 
