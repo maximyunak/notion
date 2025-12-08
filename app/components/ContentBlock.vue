@@ -4,8 +4,9 @@ import type {DropdownMenuItem} from "#ui/components/DropdownMenu.vue";
 
 const {block} = defineProps<{ block: ContentBlock }>();
 const emit = defineEmits<{
-  (e: 'update' | 'create', block: ContentBlock): void,
+  (e: 'create', block: ContentBlock, prevBlockId: string): void,
   (e: 'empty', event: Event): void,
+  (e: 'update', block: ContentBlock): void,
 }>();
 
 
@@ -77,12 +78,12 @@ const addItems = ref<DropdownMenuItem[]>([
 ]);
 
 const createContentBlock = (type: BlockType = 'text') => {
-  const block = {
+  const newBlock = {
     type: type,
     id: Math.random().toString(36).substr(7),
     value: ''
   } as ContentBlock
-  emit("create", block);
+  emit("create", newBlock, block.id);
 };
 
 const deleteOnBackspace = (e: KeyboardEvent) => {

@@ -28,8 +28,8 @@ const editPageTitle = (e: Event) => {
 };
 
 
-const createContentBlock = async (block: ContentBlock) => {
-  await store.createContentBlock(block)
+const createContentBlock = async (block: ContentBlock, prevBlockId: string) => {
+  await store.createContentBlock(block, prevBlockId)
   await nextTick(() => {
     const el = document.getElementById(`block-${block.id}`);
     if (el) el.focus();

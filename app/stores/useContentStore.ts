@@ -61,12 +61,11 @@ export const useContentStore = defineStore('contentStore', () => {
         })
     }
 
-    const createContentBlock = async (block: ContentBlock) => {
+    const createContentBlock = async (block: ContentBlock, prevBlockId: string) => {
         if (!pageContent.value) return
 
-        console.log(block, 'store')
-
-        pageContent.value?.blocks.push(block)
+        const prevIndex = pageContent.value?.blocks.findIndex(block => block.id === prevBlockId) + 1
+        pageContent.value?.blocks.splice(prevIndex, 0, block)
         await $api(`content/${pageContent.value.id}`, {
             method: 'patch',
             body: pageContent.value
