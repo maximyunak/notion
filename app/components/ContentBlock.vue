@@ -61,6 +61,18 @@ const addItems = ref<DropdownMenuItem[]>([
   {
     label: 'Text',
     onSelect: () => createContentBlock('text'),
+  },
+  {
+    label: 'Link',
+    onSelect: () => createContentBlock('link'),
+  },
+  {
+    label: 'Youtube',
+    onSelect: () => createContentBlock('youtube'),
+  },
+  {
+    label: 'Table',
+    onSelect: () => createContentBlock('table'),
   }
 ]);
 
@@ -135,7 +147,7 @@ const deleteOnBackspace = (e: KeyboardEvent) => {
     </div>
 
     <h1 :id="`block-${block.id}`"
-        @keydown.enter.prevent="()=> createContentBlock('text')"
+        @keydown.enter.shift.prevent="()=> createContentBlock('text')"
         @keydown="deleteOnBackspace"
         @input="$emit('empty', $event)"
         placeholder="Type anything"
@@ -144,7 +156,7 @@ const deleteOnBackspace = (e: KeyboardEvent) => {
         contenteditable="true">{{ block.value }}</h1>
 
     <h2 :id="`block-${block.id}`"
-        @keydown.enter.prevent="createContentBlock('text')"
+        @keydown.enter.shift.prevent="createContentBlock('text')"
         @keydown="deleteOnBackspace"
         @input="$emit('empty', $event)"
         placeholder="Type anything"
@@ -152,7 +164,7 @@ const deleteOnBackspace = (e: KeyboardEvent) => {
         contenteditable="true">{{ block.value }}</h2>
 
     <h3 :id="`block-${block.id}`"
-        @keydown.enter.prevent="createContentBlock('text')"
+        @keydown.enter.shift.prevent="createContentBlock('text')"
         @keydown="deleteOnBackspace"
         @input="$emit('empty', $event)"
         placeholder="Type anything"
@@ -161,7 +173,7 @@ const deleteOnBackspace = (e: KeyboardEvent) => {
         contenteditable="true">{{ block.value }}</h3>
 
     <h4 :id="`block-${block.id}`"
-        @keydown.enter.prevent="createContentBlock('text')"
+        @keydown.enter.shift.prevent="createContentBlock('text')"
         @keydown="deleteOnBackspace"
         @input="$emit('empty', $event)"
         placeholder="Type anything"
@@ -170,7 +182,7 @@ const deleteOnBackspace = (e: KeyboardEvent) => {
         contenteditable="true">{{ block.value }}</h4>
 
     <h5 :id="`block-${block.id}`"
-        @keydown.enter.prevent="createContentBlock('text')"
+        @keydown.enter.shift.prevent="createContentBlock('text')"
         @keydown="deleteOnBackspace"
         @input="$emit('empty', $event)"
         placeholder="Type anything"
@@ -179,7 +191,7 @@ const deleteOnBackspace = (e: KeyboardEvent) => {
         contenteditable="true">{{ block.value }}</h5>
 
     <h6 :id="`block-${block.id}`"
-        @keydown.enter.prevent="createContentBlock('text')"
+        @keydown.enter.shift.prevent="createContentBlock('text')"
         @keydown="deleteOnBackspace"
         @input="$emit('empty', $event)"
         placeholder="Type anything"
@@ -188,21 +200,53 @@ const deleteOnBackspace = (e: KeyboardEvent) => {
         contenteditable="true">{{ block.value }}</h6>
 
     <p :id="`block-${block.id}`"
-       @keydown.enter.prevent="createContentBlock('text')"
+       @keydown.enter.shift.prevent="createContentBlock('text')"
        @keydown="deleteOnBackspace"
        @input="$emit('empty', $event)"
        placeholder="Type anything"
        @blur="edit"
        v-if="block.type === 'text'"
        contenteditable="true">{{ block.value }}</p>
+
+    <img :id="`block-${block.id}`"
+         :src="block.value"
+         alt="user-image"
+         v-if="block.type === 'image'"
+         @keydown.enter.shift.prevent="createContentBlock('text')"
+    />
+
+    <div class="flex gap-2 w-full items-center"
+         v-if="block.type==='link'">
+
+      <ULink target="_blank" :href="block.value" class="inline">
+        <UButton icon="material-symbols-light:link" variant="subtle"/>
+      </ULink>
+      <ULink :id="`block-${block.id}`"
+             contenteditable="true"
+             @input="$emit('empty', $event)"
+             @blur="edit">{{ block.value }}
+      </ULink>
+    </div>
+
+    <div v-if="block.type === 'youtube'">
+      <iframe id="inlineFrameExample"
+              title="Inline Frame Example"
+              src="https://www.youtube.com/embed/GHaAsolqvX4"></iframe>
+    </div>
+
   </div>
 </template>
 
 <style scoped>
-div > *:not(button, div) {
+div > *:not(button, div, a) {
   width: 100%;
   overflow-wrap: break-word;
   white-space: pre-wrap;
+}
+
+iframe {
+  width: 700px;
+  height: 200px;
 }
 
 h1 {
