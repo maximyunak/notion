@@ -15,3 +15,7 @@ button {
     color: #9ca3af;
     pointer-events: none;
 }
+
+:not(.base-button) > button:hover {
+    background: var(--ui-bg-accented) !important;
+}

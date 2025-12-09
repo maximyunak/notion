@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type {BlockType, ContentBlock} from "~/types/PageContent";
 import type {DropdownMenuItem} from "#ui/components/DropdownMenu.vue";
+import type {FlatTreeNode} from "~/types/TreeNode";
 
 const {block} = defineProps<{ block: ContentBlock }>();
 const emit = defineEmits<{
@@ -11,6 +12,7 @@ const emit = defineEmits<{
 
 
 const store = useContentStore();
+const pagesStore = useFileStore()
 
 const isHover = ref(false);
 
@@ -66,6 +68,10 @@ const addItems = ref<DropdownMenuItem[]>([
   {
     label: 'Image',
     onSelect: () => createContentBlock('image'),
+  },
+  {
+    label: 'Page',
+    onSelect: () => createContentBlock('page'),
   },
   {
     label: 'Link',
@@ -124,6 +130,15 @@ const updateContentBlock = (event: Event): void => {
   }
   store.updatePageContent(updated)
 }
+
+const updateContentBlockFromValue = (event: FlatTreeNode) => {
+  const updated: ContentBlock = {
+    ...block,
+    value: event.id,
+  }
+
+  store.updatePageContent(updated)
+};
 
 </script>
 
@@ -235,7 +250,7 @@ const updateContentBlock = (event: Event): void => {
         <UButton icon="material-symbols:edit-outline-rounded" variant="subtle" class="absolute top-5 right-5"
                  v-if="block.value"/>
         <template #body>
-          <UInput :value="block.value" class="w-full" @blur="updateContentBlock" />
+          <UInput :value="block.value" class="w-full" @blur="updateContentBlock"/>
         </template>
       </UModal>
 
@@ -260,7 +275,7 @@ const updateContentBlock = (event: Event): void => {
       <UPopover mode="hover" :open-delay="300" :close-delay="300"
                 :content="{ align: 'start', side: 'bottom', sideOffset: 8 }">
         <a target="_blank"
-           class="block"
+           class="block link"
            :id="`block-${block.id}`"
            :href="block.value"
            v-if="block.value"
@@ -282,6 +297,21 @@ const updateContentBlock = (event: Event): void => {
              @keydown.esc="store.deleteContentBlock(block.id)"
              @blur="updateContentBlock"/>
 
+    </div>
+
+    <div v-if="block.type === 'page'">
+      <UInputMenu v-if="!block.value" placeholder="Start typing or select a page"
+                  :items="pagesStore.flatTree"
+                  @update:model-value="updateContentBlockFromValue"
+                  class="base-button w-48"
+      />
+      <div v-else>
+        <NuxtLink :href="block.value">
+          <UButton variant="subtle" icon="mdi:file-document">
+            {{ pagesStore.flatTree.find((el) => el.id === block.value)?.label || 'Unknown page' }}
+          </UButton>
+        </NuxtLink>
+      </div>
     </div>
 
   </div>
@@ -334,7 +364,7 @@ p {
   line-height: 1.6;
 }
 
-a {
+a.link {
   text-decoration: underline;
   color: #2563eb;
 }

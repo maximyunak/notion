@@ -3,10 +3,11 @@ import {findNode} from "~/utils/find-node";
 
 export const useFileStore = defineStore('fileStore', () => {
     const fileTree = ref<TreeNode[]>([]);
+    const flatTree = ref<FlatTreeNode[]>([]);
 
     const fetchPages = async () => {
         const res = await $api<FlatTreeNode[]>('/pages')
-
+        flatTree.value = res
         fileTree.value = buildTree(res)
     }
 
@@ -88,5 +89,5 @@ export const useFileStore = defineStore('fileStore', () => {
     }
 
 
-    return {fileTree, createPage, fetchPages, deletePage}
+    return {fileTree, flatTree, createPage, fetchPages, deletePage}
 })

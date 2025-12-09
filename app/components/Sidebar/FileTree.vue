@@ -99,11 +99,6 @@ const deletePage = (nodeId: string) => {
   background: var(--ui-bg-elevated);
 }
 
-button:hover {
-  background: var(--ui-bg-accented) !important;
-}
-
-
 .collapse-enter-from,
 .collapse-leave-to {
   opacity: 0;
