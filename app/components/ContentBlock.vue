@@ -112,6 +112,15 @@ const deleteOnBackspace = (e: KeyboardEvent) => {
   }
 }
 
+const updateContentBlock = (event: Event): void => {
+  const target = event.target as HTMLInputElement;
+  const updated = {
+    ...block,
+    value: target.value,
+  }
+  store.updatePageContent(updated)
+}
+
 </script>
 
 <template>
@@ -216,23 +225,40 @@ const deleteOnBackspace = (e: KeyboardEvent) => {
          @keydown.enter.shift.prevent="createContentBlock('text')"
     />
 
-    <div class="flex gap-2 w-full items-center"
-         v-if="block.type==='link'">
-
-      <ULink target="_blank" :href="block.value" class="inline">
-        <UButton icon="material-symbols-light:link" variant="subtle"/>
-      </ULink>
-      <ULink :id="`block-${block.id}`"
-             contenteditable="true"
-             @input="$emit('empty', $event)"
-             @blur="edit">{{ block.value }}
-      </ULink>
-    </div>
-
-    <div v-if="block.type === 'youtube'">
+    <div v-if="block.type === 'youtube'" class="mt-2">
       <iframe id="inlineFrameExample"
               title="Inline Frame Example"
               src="https://www.youtube.com/embed/GHaAsolqvX4"></iframe>
+    </div>
+
+
+    <div class="flex gap-2 w-full items-center"
+         v-if="block.type==='link'">
+      <UPopover mode="hover" :open-delay="300" :close-delay="300"
+                :content="{ align: 'start', side: 'bottom', sideOffset: 8 }">
+        <a target="_blank"
+           class="block"
+           :id="`block-${block.id}`"
+           :href="block.value"
+           v-if="block.value"
+        >
+          {{ block.value }}
+        </a>
+
+        <template #content>
+          <div class="w-auto p-1 ">
+            <input :value="block.value" placeholder="edit link" contenteditable="true"
+                   @input="updateContentBlock"/></div>
+        </template>
+      </UPopover>
+
+      <input :id="`block-${block.id}`"
+             v-if="!block.value"
+             placeholder="Link"
+             @keydown.enter="updateContentBlock"
+             @keydown.esc="store.deleteContentBlock(block.id)"
+             @blur="updateContentBlock"/>
+
     </div>
 
   </div>
@@ -283,5 +309,10 @@ h6 {
 p {
   font-size: 16px;
   line-height: 1.6;
+}
+
+a {
+  text-decoration: underline;
+  color: #2563eb;
 }
 </style>

@@ -77,8 +77,18 @@
           "value": "sfdds"
         },
         {
+          "type": "text",
+          "id": "nitzkq",
+          "value": "авыыва"
+        },
+        {
           "type": "h2",
           "id": "8fzigs",
+          "value": ""
+        },
+        {
+          "type": "text",
+          "id": "s9p2er",
           "value": ""
         },
         {
@@ -122,24 +132,39 @@
           "value": ""
         },
         {
+          "type": "link",
+          "id": "8xrap",
+          "value": "https:://web.telegram.org"
+        },
+        {
           "type": "h2",
           "id": "gezvn",
           "value": ""
         },
         {
           "type": "link",
-          "id": "4ebb5",
-          "value": "https://web.telegram.org/k/fds"
+          "id": "10k3rf",
+          "value": "https"
         },
         {
-          "type": "youtube",
-          "id": "lg0s4p",
-          "value": ""
+          "type": "link",
+          "id": "80s91",
+          "value": "р"
         },
         {
-          "type": "h4",
-          "id": "3gtpj",
-          "value": ""
+          "type": "link",
+          "id": "yam96q",
+          "value": "sfdsfd"
+        },
+        {
+          "type": "link",
+          "id": "14eunm",
+          "value": "htttp:fds"
+        },
+        {
+          "type": "link",
+          "id": "zj4fo",
+          "value": "ыа"
         }
       ]
     },
