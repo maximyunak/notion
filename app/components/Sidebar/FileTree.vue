@@ -67,16 +67,16 @@ const deletePage = (nodeId: string) => {
               </UButton>
               <UButton variant="ghost" v-else class="size-6" icon="mdi:file-document"/>
             </div>
-            <span>{{ element.label }}</span>
+            <span class="max-w-2/3 block text-ellipsis whitespace-nowrap overflow-hidden">{{ element.label }}</span>
           </div>
 
           <!--   кнопки справа   -->
           <Transition mode="out-in">
-            <div class="flex items-center gap-2 max-h-6" v-if="hoveredArrow[element.id]">
-              <UButton variant="ghost" icon="material-symbols:delete" @click.prevent="deletePage(element.id)"/>
+            <div class="flex items-center gap- max-h-6 absolute right-2" v-if="hoveredArrow[element.id]">
+              <UButton variant="subtle" icon="material-symbols:delete" @click.prevent="deletePage(element.id)"/>
 
               <!--   создание   -->
-              <UButton variant="ghost" icon="material-symbols:add" @click.prevent="createPage(element.id)"/>
+              <UButton variant="subtle" icon="material-symbols:add" @click.prevent="createPage(element.id)"/>
             </div>
           </Transition>
         </NuxtLink>
