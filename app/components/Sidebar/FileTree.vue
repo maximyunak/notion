@@ -52,7 +52,7 @@ const deletePage = (nodeId: string) => {
             class="relative flex flex-row items-center justify-between w-full font-medium text-sm px-2.5 py-1.5 hover:bg-elevated cursor-pointer rounded-md text-white transition-colors">
 
           <!--   название   -->
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2 max-w-2/3">
 
             <!--    кнопка раскрытия/иконки файла    -->
             <div class="relative flex flex-row items-center">
@@ -67,7 +67,7 @@ const deletePage = (nodeId: string) => {
               </UButton>
               <UButton variant="ghost" v-else class="size-6" icon="mdi:file-document"/>
             </div>
-            <span class="max-w-2/3 block text-ellipsis whitespace-nowrap overflow-hidden">{{ element.label }}</span>
+            <span class="truncate">{{ element.label }}</span>
           </div>
 
           <!--   кнопки справа   -->

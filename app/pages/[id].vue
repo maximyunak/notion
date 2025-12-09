@@ -54,12 +54,8 @@ useHead(() => ({
     <input
         @blur="store.savePageTitle"
         v-model="titleValue"
-        contenteditable="true"
         placeholder="Enter page title"
-        data-content-editable-leaf="true"
-        spellcheck="true"
-        class="editable cursor-text break-words whitespace-pre-wrap text-6xl font-bold pl-18"/>
-
+        class="cursor-text break-words whitespace-pre-wrap text-5xl font-bold pl-18"/>
 
     <div class="w-full h-full mt-10">
       <draggable
