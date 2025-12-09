@@ -4,6 +4,7 @@ import type {FlatTreeNode} from "~/types/TreeNode";
 import type {ContentBlock, PageContent} from "~/types/PageContent";
 
 const store = useContentStore();
+const fileStore = useFileStore();
 
 const route = useRoute();
 
@@ -21,13 +22,6 @@ const updateContent = (updated: ContentBlock) => {
   store.updatePageContent(updated);
 }
 
-const editPageTitle = (e: Event) => {
-  const el = e.target as HTMLElement;
-
-  store.editPageTitle(el.innerText);
-};
-
-
 const createContentBlock = async (block: ContentBlock, prevBlockId: string) => {
   await store.createContentBlock(block, prevBlockId)
   await nextTick(() => {
@@ -36,21 +30,37 @@ const createContentBlock = async (block: ContentBlock, prevBlockId: string) => {
   })
 }
 
+
+const titleValue = computed({
+  get() {
+    return store.pageContent?.title ?? ''
+  },
+  set(value: string) {
+    if (!store.pageContent) return
+    store.pageContent.title = value;
+    fileStore.editTitle(store.pageContent.id, value)
+  }
+})
+
+useHead(() => ({
+  title: store.pageContent
+      ? `Notion | ${store.pageContent?.title || 'Page'}`
+      : 'Notion | Page'
+}))
 </script>
 
 <template>
   <div class="w-full h-full flex flex-col justify-center max-w-[700px]">
-    <h1
-        @blur="editPageTitle"
-        @input="onInput"
-        @focus="onInput"
+    <input
+        @blur="store.savePageTitle"
+        v-model="titleValue"
         contenteditable="true"
         placeholder="Enter page title"
         data-content-editable-leaf="true"
         spellcheck="true"
-        class="editable cursor-text break-words whitespace-pre-wrap text-6xl font-bold pl-18">
-      {{ store?.pageData?.label }}
-    </h1>
+        class="editable cursor-text break-words whitespace-pre-wrap text-6xl font-bold pl-18"/>
+
+
     <div class="w-full h-full mt-10">
       <draggable
           animation="150"

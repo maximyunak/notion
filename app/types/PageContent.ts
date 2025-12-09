@@ -1,5 +1,6 @@
 export interface PageContent {
     id: string;
+    title: string;
     content: string;
     blocks: ContentBlock[]
 }
@@ -10,4 +11,16 @@ export interface ContentBlock {
     value: string
 }
 
-export type BlockType = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'text' | 'image' | 'table' | 'link' | 'youtube' | 'page';
+export type BlockType =
+    'h1'
+    | 'h2'
+    | 'h3'
+    | 'h4'
+    | 'h5'
+    | 'h6'
+    | 'text'
+    | 'image'
+    | 'table'
+    | 'link'
+    | 'youtube'
+    | 'page';

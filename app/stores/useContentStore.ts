@@ -3,20 +3,9 @@ import type {FlatTreeNode} from "~/types/TreeNode";
 
 export const useContentStore = defineStore('contentStore', () => {
     const pageContent = ref<PageContent>()
-    const pageData = ref<FlatTreeNode>()
 
     const getPageContent = async (id: string) => {
-        const [page, content] = await Promise.all([
-            $api<FlatTreeNode>(`/pages/${id}`),
-            $api<PageContent>(`content/${id}`).catch(() => ({
-                id, content: '', blocks: []
-            }))
-        ])
-
-        pageContent.value = content
-        pageData.value = page
-
-        return
+        pageContent.value = await $api<PageContent>(`/content/${id}`)
     }
 
     const updatePageContent = async (updated: ContentBlock) => {
@@ -32,20 +21,27 @@ export const useContentStore = defineStore('contentStore', () => {
             method: 'patch',
             body: pageContent.value
         })
-
-        return
     }
 
-    const editPageTitle = async (title: string) => {
-        if (!pageData.value) return
-        pageData.value.label = title
+    const savePageTitle = async () => {
+        if (!pageContent.value) return
 
-        console.log(title)
 
-        await $api(`pages/${pageData.value.id}`, {
-            method: 'patch',
-            body: pageData.value
-        })
+
+        await Promise.all([
+            $api(`content/${pageContent.value.id}`, {
+                method: 'patch',
+                body: {
+                    title: pageContent.value.title
+                }
+            }),
+            $api(`pages/${pageContent.value.id}`, {
+                method: 'patch',
+                body: {
+                    label: pageContent.value.title
+                }
+            }),
+        ])
     }
 
     const deleteContentBlock = async (id: string) => {
@@ -85,10 +81,9 @@ export const useContentStore = defineStore('contentStore', () => {
 
     return {
         pageContent,
-        pageData,
         getPageContent,
         updatePageContent,
-        editPageTitle,
+        savePageTitle,
         deleteContentBlock,
         createContentBlock,
         savePositions

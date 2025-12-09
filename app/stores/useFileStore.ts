@@ -28,6 +28,7 @@ export const useFileStore = defineStore('fileStore', () => {
             method: 'post',
             body: {
                 id: res.id,
+                title: "Untitled",
                 content: ''
             }
         })
@@ -88,6 +89,14 @@ export const useFileStore = defineStore('fileStore', () => {
         return false
     }
 
+    const editTitle = (id: string, title: string) => {
+        const flat = flatTree.value.find(n => n.id === id)
+        if (flat) flat.label = title
 
-    return {fileTree, flatTree, createPage, fetchPages, deletePage}
+        const node = findNode(id, fileTree.value);
+        if (node) node.label = title;
+    }
+
+
+    return {fileTree, flatTree, createPage, fetchPages, deletePage, editTitle}
 })
