@@ -67,14 +67,24 @@
       "content": "asdfsadasdfas",
       "blocks": [
         {
-          "type": "h3",
-          "id": "phnbw",
+          "type": "text",
+          "id": "y34i7",
           "value": ""
         },
         {
           "type": "h4",
           "id": "mfp6ci",
           "value": "sfdds"
+        },
+        {
+          "type": "h3",
+          "id": "phnbw",
+          "value": ""
+        },
+        {
+          "type": "h2",
+          "id": "dk0j9",
+          "value": ""
         },
         {
           "type": "text",
@@ -104,16 +114,6 @@
         {
           "type": "text",
           "id": "2lgec",
-          "value": ""
-        },
-        {
-          "type": "h2",
-          "id": "dk0j9",
-          "value": ""
-        },
-        {
-          "type": "text",
-          "id": "y34i7",
           "value": ""
         },
         {
@@ -148,23 +148,13 @@
         },
         {
           "type": "link",
-          "id": "80s91",
-          "value": "р"
-        },
-        {
-          "type": "link",
           "id": "yam96q",
           "value": "sfdsfd"
         },
         {
           "type": "link",
-          "id": "14eunm",
-          "value": "htttp:fds"
-        },
-        {
-          "type": "link",
-          "id": "zj4fo",
-          "value": "ыа"
+          "id": "80s91",
+          "value": "р"
         }
       ]
     },

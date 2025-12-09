@@ -53,6 +53,8 @@ const createContentBlock = async (block: ContentBlock, prevBlockId: string) => {
     </h1>
     <div class="w-full h-full mt-10">
       <draggable
+          animation="150"
+          ghost-class="opacity-50"
           v-if="store.pageContent"
           :list="store.pageContent.blocks"
           item-key="id"
