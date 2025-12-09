@@ -22,7 +22,7 @@ const onSelect = (item: DropDownItem) => {
              @click="isOpen=!isOpen"
     />
     <Transition>
-      <div v-if="isOpen" class="absolute top-full z-50 shadow-lg left-1/2 -translate-x-1/2 bg-danger rounded-sm"
+      <div v-if="isOpen" class="absolute top-full z-50 shadow-lg left-1/2 -translate-x-1/2 bg-muted rounded-sm"
       >
         <div @click="onSelect(item)"
              v-for="item in items"

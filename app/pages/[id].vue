@@ -22,7 +22,7 @@ const updateContent = (updated: ContentBlock) => {
   store.updatePageContent(updated);
 }
 
-const createContentBlock = async (block: ContentBlock, prevBlockId: string) => {
+const createContentBlock = async (block: ContentBlock, prevBlockId?: string = store.pageContent?.blocks[store.pageContent.blocks.length - 1]?.id ?? '') => {
   await store.createContentBlock(block, prevBlockId)
   await nextTick(() => {
     const el = document.getElementById(`block-${block.id}`);
@@ -76,6 +76,8 @@ useHead(() => ({
           />
         </template>
       </draggable>
+
+      <CommandLine class="pl-18" @empty="onInput" @create="createContentBlock"/>
 
     </div>
   </div>
