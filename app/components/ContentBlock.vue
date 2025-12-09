@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type {BlockType, ContentBlock} from "~/types/PageContent";
-import type {DropdownMenuItem} from "#ui/components/DropdownMenu.vue";
 import type {FlatTreeNode} from "~/types/TreeNode";
+import type {DropDownItem} from "~/types/DropDown";
 
 const {block} = defineProps<{ block: ContentBlock }>();
 const emit = defineEmits<{
@@ -10,10 +10,8 @@ const emit = defineEmits<{
   (e: 'update', block: ContentBlock): void,
 }>();
 
-
 const store = useContentStore();
 const pagesStore = useFileStore()
-
 const isHover = ref(false);
 
 const edit = (event: Event) => {
@@ -25,7 +23,7 @@ const edit = (event: Event) => {
   emit("update", updated);
 }
 
-const optionItems = ref<DropdownMenuItem[]>([
+const optionItems = ref<DropDownItem[]>([
   {
     label: 'delete',
     icon: 'material-symbols:delete',
@@ -36,7 +34,7 @@ const optionItems = ref<DropdownMenuItem[]>([
   }
 ])
 
-const addItems = ref<DropdownMenuItem[]>([
+const addItems = ref<DropDownItem[]>([
   {
     label: 'H1',
     onSelect: () => createContentBlock('h1'),
@@ -145,37 +143,12 @@ const updateContentBlockFromValue = (event: FlatTreeNode) => {
 <template>
   <div @mouseenter="isHover = true" @mouseleave="isHover = false" class="flex items-center relative gap-2">
 
-    <div :class="isHover ? 'opacity-100' : 'opacity-0 pointer-events-none'" class="flex gap-2 w-18">
-      <UDropdownMenu
-          :items="addItems"
-          :content="{
-            align: 'start',
-            side: 'left',
-            sideOffset: 0,
-          }"
-          :ui="{
-            content: 'w-48'
-          }">
-        <UButton icon="material-symbols:add-2"
-                 variant="ghost"/>
-      </UDropdownMenu>
-      <UDropdownMenu
-          :items="optionItems"
-          :content="{
-            align: 'start',
-            side: 'left',
-            sideOffset: 0,
-          }"
-          :ui="{
-            content: 'w-48'
-          }">
-        <UButton variant="ghost"
-                 class="drag-handle cursor-grab active:cursor-grabbing"
-                 icon="teenyicons:drag-vertical-solid"/>
-      </UDropdownMenu>
+    <div :class="isHover ? 'opacity-100' : 'opacity-0'" class="flex gap-2 w-18">
+      <DropDown :items="addItems" icon="material-symbols:add-2"/>
+      <DropDown :items="optionItems" class="drag-handle" icon="teenyicons:drag-vertical-solid"/>
     </div>
 
-    <h1 :id="`block-${block.id}`"
+    <h1 :id=" `block-${block.id}`"
         @keydown.enter.shift.prevent="()=> createContentBlock('text')"
         @keydown="deleteOnBackspace"
         @input="$emit('empty', $event)"

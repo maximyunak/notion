@@ -18,7 +18,6 @@
 .v-enter-from,
 .v-leave-to {
   opacity: 0;
-  filter: blur(8px);
 }
 
 .v-enter-to,
