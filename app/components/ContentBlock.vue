@@ -64,6 +64,10 @@ const addItems = ref<DropdownMenuItem[]>([
     onSelect: () => createContentBlock('text'),
   },
   {
+    label: 'Image',
+    onSelect: () => createContentBlock('image'),
+  },
+  {
     label: 'Link',
     onSelect: () => createContentBlock('link'),
   },
@@ -218,12 +222,31 @@ const updateContentBlock = (event: Event): void => {
        v-if="block.type === 'text'"
        contenteditable="true">{{ block.value }}</p>
 
-    <img :id="`block-${block.id}`"
-         :src="block.value"
-         alt="user-image"
-         v-if="block.type === 'image'"
-         @keydown.enter.shift.prevent="createContentBlock('text')"
-    />
+    <div v-if="block.type==='image'" class="relative">
+
+      <img :id="`block-${block.id}`"
+           class="block mb-2"
+           :src="block.value"
+           alt="user-image"
+           v-if="block.value"
+           @keydown.enter.shift.prevent="createContentBlock('text')"
+      />
+      <UModal title="Update image link">
+        <UButton icon="material-symbols:edit-outline-rounded" variant="subtle" class="absolute top-5 right-5"
+                 v-if="block.value"/>
+        <template #body>
+          <UInput :value="block.value" class="w-full" @blur="updateContentBlock" />
+        </template>
+      </UModal>
+
+      <input :id="`block-${block.id}`"
+             v-if="!block.value"
+             placeholder="Link to image"
+             @keydown.enter="updateContentBlock"
+             @keydown.esc="store.deleteContentBlock(block.id)"
+             @blur="updateContentBlock"/>
+
+    </div>
 
     <div v-if="block.type === 'youtube'" class="mt-2">
       <iframe id="inlineFrameExample"
