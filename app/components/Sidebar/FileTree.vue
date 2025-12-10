@@ -29,7 +29,7 @@ const deletePage = (nodeId: string) => {
 }
 
 const onDropEnd = (e: any) => {
-  nodes.forEach((el, index) => el.order = index)
+  // nodes.forEach((el, index) => el.order = index)
   store.syncParentIds()
 };
 

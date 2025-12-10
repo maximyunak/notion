@@ -14,11 +14,22 @@ export const useFileStore = defineStore('fileStore', () => {
 
 
     const createPage = async (pageData?: Partial<FlatTreeNode>, parentId?: null | string) => {
+        let order: number;
+
+        if (parentId) {
+            const parent = findNode(parentId, fileTree.value);
+            order = parent?.children.length ?? 0;
+        } else {
+            order = fileTree.value.length;
+        }
+
         const body = {
             ...pageData,
             parentId,
-            label: "Untitled"
+            label: "Untitled",
+            order,
         }
+
 
         const res = await $api<FlatTreeNode>('/pages', {
             method: 'post',
@@ -36,10 +47,9 @@ export const useFileStore = defineStore('fileStore', () => {
 
         if (parentId) {
             const parent = findNode(parentId, fileTree.value);
-
-            parent?.children.push({...res, open: true, children: []})
+            parent?.children.push({...res, open: true, children: [], order});
         } else {
-            fileTree.value.push({...res, open: true, children: []})
+            fileTree.value.push({...res, open: true, children: [], order});
         }
 
         return res.id
@@ -106,12 +116,13 @@ export const useFileStore = defineStore('fileStore', () => {
                 if (!node) continue
 
                 node.parentId = parentId ?? undefined
+                node.order = i
 
                 await $api(`/pages/${node.id}`, {
                     method: 'patch',
                     body: {
                         parentId: parentId ?? null,
-                        order: node.order
+                        order: i
                     }
                 })
 

@@ -13,8 +13,10 @@ export const buildTree = (pages: FlatTreeNode[]) => {
             const parent = map.get(page.parentId);
             const child = map.get(page.id);
             parent.children.push(child);
+            parent.children.sort((a: TreeNode, b: TreeNode) => a.order - b.order);
         } else {
             treeNodes.push(map.get(page.id));
+            treeNodes.sort((a, b) => a.order - b.order);
         }
     }
 
