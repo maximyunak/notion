@@ -3,7 +3,7 @@ import draggable from "vuedraggable";
 
 import type {TreeNode} from "~/types/TreeNode";
 
-defineProps<{ nodes: TreeNode[] }>()
+const {parentId, nodes} = defineProps<{ nodes: TreeNode[], parentId: string | null }>();
 
 const route = useRoute()
 const router = useRouter()
@@ -28,6 +28,15 @@ const deletePage = (nodeId: string) => {
   }
 }
 
+const onDropEnd = (e: any) => {
+  nodes.forEach((el, index) => el.order = index)
+  store.syncParentIds()
+};
+
+// watchEffect(() => {
+//   console.log('tree')
+//   console.log(store.fileTree);
+// })
 </script>
 
 
@@ -35,10 +44,12 @@ const deletePage = (nodeId: string) => {
 
   <draggable
       :list="nodes"
-      :group="{ name: 'g1' }"
+      :group="{ name: 'children', pull: true, put: true }"
       animation="150"
       item-key="id"
       ghost-class="opacity-50"
+      :data-parent-id="parentId"
+      @end="onDropEnd"
   >
     <template #item="{element}">
       <div>
@@ -82,9 +93,10 @@ const deletePage = (nodeId: string) => {
         </NuxtLink>
 
         <Transition name="collapse" mode="out-in">
-          <div class="ml-3 border-s border-default isolate" v-if="element.open">
-            <SidebarFileTree :nodes="element.children" v-if="element.children.length"/>
-            <span v-else class="text-sm pl-8 text-muted block pb-1">No pages inside</span>
+          <div class="ml-3 border-s border-default isolate">
+            <SidebarFileTree :nodes="element.children"
+                             :parentId="element.id"/>
+            <span v-if="element.children.length === 0" class="text-sm pl-8 text-muted block pb-1">No pages inside</span>
           </div>
         </Transition>
       </div>

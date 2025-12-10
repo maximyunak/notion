@@ -1,5 +1,6 @@
 import type {FlatTreeNode, TreeNode} from '~/types/TreeNode'
 import {findNode} from "~/utils/find-node";
+import FileTree from "~/components/Sidebar/FileTree.vue";
 
 export const useFileStore = defineStore('fileStore', () => {
     const fileTree = ref<TreeNode[]>([]);
@@ -29,7 +30,7 @@ export const useFileStore = defineStore('fileStore', () => {
             body: {
                 id: res.id,
                 title: "Untitled",
-                content: ''
+                blocks: []
             }
         })
 
@@ -97,6 +98,30 @@ export const useFileStore = defineStore('fileStore', () => {
         if (node) node.label = title;
     }
 
+    const syncParentIds = async () => {
+        const walk = async (nodes: TreeNode[], parentId: string | null) => {
+            for (let i = 0; i < nodes.length; i++) {
+                const node = nodes[i]
 
-    return {fileTree, flatTree, createPage, fetchPages, deletePage, editTitle}
+                if (!node) continue
+
+                node.parentId = parentId ?? undefined
+
+                await $api(`/pages/${node.id}`, {
+                    method: 'patch',
+                    body: {
+                        parentId: parentId ?? null,
+                        order: node.order
+                    }
+                })
+
+                await walk(node.children, node.id)
+            }
+        }
+
+        await walk(fileTree.value, null);
+    };
+
+
+    return {fileTree, flatTree, createPage, fetchPages, deletePage, editTitle, syncParentIds}
 })

@@ -28,7 +28,9 @@ await store.fetchPages()
       </UButton>
 
       <div class="flex flex-col">
-        <SidebarFileTree v-if="store.fileTree?.length > 0" :nodes="store.fileTree"/>
+        <SidebarFileTree v-if="store.fileTree?.length > 0"
+                         :nodes="store.fileTree"
+                         :parentId="null"/>
         <UButton variant="subtle" @click="store.createPage()">
           add
         </UButton>
