@@ -3,6 +3,7 @@ import type {BlockType, ContentBlock} from "~/types/PageContent";
 import type {FlatTreeNode} from "~/types/TreeNode";
 import type {DropDownItem} from "~/types/DropDown";
 import {YouTubeGetID} from "~/utils/get-embed-youtube";
+import {getHttpLink} from "~/utils/http-link";
 
 const {block} = defineProps<{ block: ContentBlock }>();
 const emit = defineEmits<{
@@ -250,25 +251,16 @@ const editableTags = computed(() => {
 
 
     <!--  ссылка  -->
-    <div class="flex gap-2 w-full items-center"
+    <div class="flex gap-2 w-full items-center relative"
          v-if="block.type==='link'">
-      <UPopover mode="hover" :open-delay="300" :close-delay="300"
-                :content="{ align: 'start', side: 'bottom', sideOffset: 8 }">
-        <a target="_blank"
-           class="block link"
-           :id="`block-${block.id}`"
-           :href="block.value"
-           v-if="block.value"
-        >
-          {{ block.value }}
-        </a>
-
-        <template #content>
-          <div class="w-auto p-1 ">
-            <input :value="block.value" placeholder="edit link" contenteditable="true"
-                   @input="updateContentBlock"/></div>
-        </template>
-      </UPopover>
+      <a target="_blank"
+         class="block link"
+         :id="`block-${block.id}`"
+         :href="getHttpLink(block.value)"
+         v-if="block.value"
+      >
+        {{ block.value }}
+      </a>
 
       <input :id="`block-${block.id}`"
              v-if="!block.value"
