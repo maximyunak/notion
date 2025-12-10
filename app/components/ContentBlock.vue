@@ -149,6 +149,17 @@ const updateContentBlockFromValue = (event: FlatTreeNode) => {
   store.updatePageContent(updated)
 };
 
+const allowedTags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'text'];
+
+const editableTags = computed(() => {
+  if (allowedTags.includes(block.type as typeof allowedTags[number])) {
+    return block.type === 'text' ? 'p' : block.type;
+  }
+
+  return null
+});
+
+
 </script>
 
 <template>
@@ -160,67 +171,18 @@ const updateContentBlockFromValue = (event: FlatTreeNode) => {
       <DropDown :items="optionItems" class="drag-handle" icon="teenyicons:drag-vertical-solid"/>
     </div>
 
-    <h1 :id=" `block-${block.id}`"
-        @keydown.enter.shift.prevent="()=> createContentBlock('text')"
-        @keydown="deleteOnBackspace"
-        @input="$emit('empty', $event)"
-        placeholder="Type anything"
-        @blur="edit"
-        v-if="block.type === 'h1'"
-        contenteditable="true">{{ block.value }}</h1>
-
-    <h2 :id="`block-${block.id}`"
-        @keydown.enter.shift.prevent="createContentBlock('text')"
-        @keydown="deleteOnBackspace"
-        @input="$emit('empty', $event)"
-        placeholder="Type anything"
-        @blur="edit" v-if="block.type === 'h2'"
-        contenteditable="true">{{ block.value }}</h2>
-
-    <h3 :id="`block-${block.id}`"
+    <!--  текстовые блоки h1 - p  -->
+    <component
+        :id="`block-${block.id}`"
         @keydown.enter.shift.prevent="createContentBlock('text')"
         @keydown="deleteOnBackspace"
         @input="$emit('empty', $event)"
         placeholder="Type anything"
         @blur="edit"
-        v-if="block.type === 'h3'"
-        contenteditable="true">{{ block.value }}</h3>
-
-    <h4 :id="`block-${block.id}`"
-        @keydown.enter.shift.prevent="createContentBlock('text')"
-        @keydown="deleteOnBackspace"
-        @input="$emit('empty', $event)"
-        placeholder="Type anything"
-        @blur="edit"
-        v-if="block.type === 'h4'"
-        contenteditable="true">{{ block.value }}</h4>
-
-    <h5 :id="`block-${block.id}`"
-        @keydown.enter.shift.prevent="createContentBlock('text')"
-        @keydown="deleteOnBackspace"
-        @input="$emit('empty', $event)"
-        placeholder="Type anything"
-        @blur="edit"
-        v-if="block.type === 'h5'"
-        contenteditable="true">{{ block.value }}</h5>
-
-    <h6 :id="`block-${block.id}`"
-        @keydown.enter.shift.prevent="createContentBlock('text')"
-        @keydown="deleteOnBackspace"
-        @input="$emit('empty', $event)"
-        placeholder="Type anything"
-        @blur="edit"
-        v-if="block.type === 'h6'"
-        contenteditable="true">{{ block.value }}</h6>
-
-    <p :id="`block-${block.id}`"
-       @keydown.enter.shift.prevent="createContentBlock('text')"
-       @keydown="deleteOnBackspace"
-       @input="$emit('empty', $event)"
-       placeholder="Type anything"
-       @blur="edit"
-       v-if="block.type === 'text'"
-       contenteditable="true">{{ block.value }}</p>
+        contenteditable="true"
+        v-if="editableTags"
+        :is="editableTags">{{ block.value }}
+    </component>
 
 
     <!--  картинка  -->
