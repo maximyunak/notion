@@ -11,10 +11,10 @@ export const useContentStore = defineStore('contentStore', () => {
     const updatePageContent = async (updated: ContentBlock) => {
         if (!pageContent.value) return
 
-        const idx = pageContent.value?.blocks.findIndex(block => block.id === updated.id)
+        const el = pageContent.value?.blocks.find(block => block.id === updated.id)
 
-        if (idx !== -1) {
-            pageContent.value?.blocks.splice(idx, 1, updated)
+        if (el) {
+            Object.assign(el, updated)
         }
 
         await $api(`content/${pageContent.value.id}`, {
@@ -25,7 +25,6 @@ export const useContentStore = defineStore('contentStore', () => {
 
     const savePageTitle = async () => {
         if (!pageContent.value) return
-
 
 
         await Promise.all([

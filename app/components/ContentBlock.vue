@@ -15,6 +15,7 @@ const emit = defineEmits<{
 const store = useContentStore();
 const pagesStore = useFileStore()
 const isHover = ref(false);
+const isOpenModal = ref(false)
 
 const edit = (event: Event) => {
   const el = event.target as HTMLElement;
@@ -32,6 +33,13 @@ const optionItems = ref<DropDownItem[]>([
     color: 'error',
     onSelect() {
       store.deleteContentBlock(block.id)
+    }
+  },
+  {
+    label: 'edit',
+    icon: 'material-symbols:edit',
+    onSelect() {
+      isOpenModal.value = true
     }
   }
 ])
@@ -106,7 +114,6 @@ const deleteOnBackspace = (e: KeyboardEvent) => {
   const index = store.pageContent?.blocks.findIndex(b => b.id === block.id)
 
   if (index === undefined || index === -1) return;
-  console.log('dd', block.value)
 
   const el = e.target as HTMLElement;
 
@@ -127,11 +134,19 @@ const deleteOnBackspace = (e: KeyboardEvent) => {
   }
 }
 
-const updateContentBlock = (event: Event): void => {
-  const target = event.target as HTMLInputElement;
+const updateContentBlock = (event?: Event, type?: BlockType): void => {
+  const target = event?.target as HTMLInputElement;
+
   const updated = {
     ...block,
-    value: target.value,
+  }
+
+  if (target) {
+    updated.value = target.value;
+  }
+
+  if (type) {
+    updated.type = type;
   }
 
   if (block.type === 'youtube') {
@@ -146,7 +161,7 @@ const updateTableBlock = (newData: string[][]): void => {
   const updated = {
     ...block,
     value: newData,
-  }
+  } as ContentBlock
 
   store.updatePageContent(updated)
 }
@@ -170,7 +185,35 @@ const editableTags = computed(() => {
   return null
 });
 
+// для смены тега
+const textItems = [
+  {
+    label: 'H1',
+    onSelect: () => updateContentBlock(undefined, 'h1')
+  },
+  {
+    label: 'H2',
+    onSelect: () => updateContentBlock(undefined, 'h2')
+  },
+  {
+    label: 'H3',
+    onSelect: () => updateContentBlock(undefined, 'h3')
+  }, {
+    label: 'H4',
+    onSelect: () => updateContentBlock(undefined, 'h4')
+  }, {
+    label: 'H5',
+    onSelect: () => updateContentBlock(undefined, 'h5')
+  }, {
+    label: 'H6',
+    onSelect: () => updateContentBlock(undefined, 'h6')
+  }, {
+    label: 'text',
+    onSelect: () => updateContentBlock(undefined, 'text')
+  },
+]
 
+const selectedTextType = ref(textItems.find(el => el.label.toLowerCase() === block.type)?.label)
 </script>
 
 <template>
@@ -181,6 +224,13 @@ const editableTags = computed(() => {
       <DropDown :items="addItems" icon="material-symbols:add-2"/>
       <DropDown :items="optionItems" class="drag-handle" icon="teenyicons:drag-vertical-solid"/>
     </div>
+
+    <UModal title="edit" v-model:open="isOpenModal">
+      <template #body>
+        <UInput :value="block.value" class="w-full" @blur="updateContentBlock"/>
+        <USelect :items="textItems" value-key="label" v-model="selectedTextType" class="w-full"/>
+      </template>
+    </UModal>
 
     <!--  текстовые блоки h1 - p  -->
     <component

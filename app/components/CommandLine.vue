@@ -171,10 +171,6 @@ const onGlobalKeyDown = (e: KeyboardEvent): void => {
     isCommand.value = true
   }
 }
-
-watchEffect(() => {
-  console.log(filteredItems.value)
-})
 </script>
 
 <template>
