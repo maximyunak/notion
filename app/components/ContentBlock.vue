@@ -2,7 +2,7 @@
 import type {BlockType, ContentBlock} from "~/types/PageContent";
 import type {FlatTreeNode} from "~/types/TreeNode";
 import type {DropDownItem} from "~/types/DropDown";
-import {getYouTubeId, YouTubeGetID} from "~/utils/get-embed-youtube";
+import {YouTubeGetID} from "~/utils/get-embed-youtube";
 
 const {block} = defineProps<{ block: ContentBlock }>();
 const emit = defineEmits<{
@@ -34,7 +34,6 @@ const optionItems = ref<DropDownItem[]>([
     }
   }
 ])
-
 const addItems = ref<DropDownItem[]>([
   {
     label: 'H1',
@@ -92,6 +91,12 @@ const createContentBlock = (type: BlockType = 'text') => {
     id: Math.random().toString(36).substr(7),
     value: ''
   } as ContentBlock
+  if (type === 'table') {
+    newBlock.value = [
+      ['Header1', 'Header2'],
+      ['', ''],
+    ]
+  }
   emit("create", newBlock, block.id);
 };
 
@@ -123,10 +128,6 @@ const deleteOnBackspace = (e: KeyboardEvent) => {
 
 const updateContentBlock = (event: Event): void => {
   const target = event.target as HTMLInputElement;
-  if (block.type === 'youtube') {
-    console.log(YouTubeGetID(target.value))
-
-  }
   const updated = {
     ...block,
     value: target.value,
@@ -135,6 +136,15 @@ const updateContentBlock = (event: Event): void => {
   if (block.type === 'youtube') {
     const videoId = YouTubeGetID(target.value)
     updated.value = `https://www.youtube.com/embed/${videoId}`
+  }
+
+  store.updatePageContent(updated)
+}
+
+const updateTableBlock = (newData: string[][]): void => {
+  const updated = {
+    ...block,
+    value: newData,
   }
 
   store.updatePageContent(updated)
@@ -284,6 +294,11 @@ const editableTags = computed(() => {
         </NuxtLink>
       </div>
     </div>
+
+    <!--  таблица  -->
+    <client-only>
+      <ContentTable v-if="block.type==='table'" :data="block.value" @update="updateTableBlock"/>
+    </client-only>
 
   </div>
 </template>

@@ -69,6 +69,12 @@ const createContentBlock = (type: BlockType = 'text') => {
     id: Math.random().toString(36).substr(7),
     value: ''
   } as ContentBlock
+  if (type === 'table') {
+    newBlock.value = [
+      ['Header1', 'Header2'],
+      ['', ''],
+    ]
+  }
   emit("create", newBlock);
 };
 

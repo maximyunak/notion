@@ -5,10 +5,18 @@ export interface PageContent {
     blocks: ContentBlock[]
 }
 
-export interface ContentBlock {
+export type ContentBlock = TextType | TableType;
+
+export interface TextType {
     id: string;
     type: BlockType
     value: string
+}
+
+export interface TableType {
+    id: string,
+    type: 'table',
+    value: string[][]
 }
 
 export type BlockType =

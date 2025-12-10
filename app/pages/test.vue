@@ -37,7 +37,13 @@ watchEffect(() => {
 </script>
 
 <template>
-  <NestedDraggable :list="list"/>
+  <div>
+    <NestedDraggable :list="list"/>
+
+    <client-only>
+      <ContentTable/>
+    </client-only>
+  </div>
 </template>
 
 <style scoped>
