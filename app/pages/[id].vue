@@ -22,8 +22,9 @@ const updateContent = (updated: ContentBlock) => {
   store.updatePageContent(updated);
 }
 
-const createContentBlock = async (block: ContentBlock, prevBlockId?: string = store.pageContent?.blocks[store.pageContent.blocks.length - 1]?.id ?? '') => {
+const createContentBlock = async (block: ContentBlock, prevBlockId: string = store.pageContent?.blocks[store.pageContent.blocks.length - 1]?.id ?? '', isFocus: boolean = true) => {
   await store.createContentBlock(block, prevBlockId)
+  if (!isFocus) return
   await nextTick(() => {
     const el = document.getElementById(`block-${block.id}`);
     if (el) el.focus();

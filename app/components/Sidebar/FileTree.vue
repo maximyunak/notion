@@ -29,14 +29,8 @@ const deletePage = (nodeId: string) => {
 }
 
 const onDropEnd = (e: any) => {
-  // nodes.forEach((el, index) => el.order = index)
   store.syncParentIds()
 };
-
-// watchEffect(() => {
-//   console.log('tree')
-//   console.log(store.fileTree);
-// })
 </script>
 
 
@@ -60,7 +54,7 @@ const onDropEnd = (e: any) => {
             @mouseenter="hoveredArrow[element.id] = true"
             @mouseleave="hoveredArrow[element.id] = false"
 
-            class="relative flex flex-row items-center justify-between w-full font-medium text-sm px-2.5 py-1.5 hover:bg-elevated cursor-pointer rounded-md text-white transition-colors">
+            class="relative flex flex-row items-center justify-between w-full font-medium text-sm px-2.5 py-1.5 hover:bg-elevated cursor-pointer rounded-md transition-colors">
 
           <!--   название   -->
           <div class="flex items-center gap-2 max-w-2/3">
