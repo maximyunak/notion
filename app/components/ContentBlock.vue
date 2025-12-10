@@ -2,6 +2,7 @@
 import type {BlockType, ContentBlock} from "~/types/PageContent";
 import type {FlatTreeNode} from "~/types/TreeNode";
 import type {DropDownItem} from "~/types/DropDown";
+import {getYouTubeId, YouTubeGetID} from "~/utils/get-embed-youtube";
 
 const {block} = defineProps<{ block: ContentBlock }>();
 const emit = defineEmits<{
@@ -122,10 +123,20 @@ const deleteOnBackspace = (e: KeyboardEvent) => {
 
 const updateContentBlock = (event: Event): void => {
   const target = event.target as HTMLInputElement;
+  if (block.type === 'youtube') {
+    console.log(YouTubeGetID(target.value))
+
+  }
   const updated = {
     ...block,
     value: target.value,
   }
+
+  if (block.type === 'youtube') {
+    const videoId = YouTubeGetID(target.value)
+    updated.value = `https://www.youtube.com/embed/${videoId}`
+  }
+
   store.updatePageContent(updated)
 }
 
@@ -143,6 +154,7 @@ const updateContentBlockFromValue = (event: FlatTreeNode) => {
 <template>
   <div @mouseenter="isHover = true" @mouseleave="isHover = false" class="flex items-center relative gap-2">
 
+    <!--  меню слева  -->
     <div :class="isHover ? 'opacity-100' : 'opacity-0'" class="flex gap-2 w-18">
       <DropDown :items="addItems" icon="material-symbols:add-2"/>
       <DropDown :items="optionItems" class="drag-handle" icon="teenyicons:drag-vertical-solid"/>
@@ -210,6 +222,8 @@ const updateContentBlockFromValue = (event: FlatTreeNode) => {
        v-if="block.type === 'text'"
        contenteditable="true">{{ block.value }}</p>
 
+
+    <!--  картинка  -->
     <div v-if="block.type==='image'" class="relative">
 
       <img :id="`block-${block.id}`"
@@ -236,13 +250,34 @@ const updateContentBlockFromValue = (event: FlatTreeNode) => {
 
     </div>
 
-    <div v-if="block.type === 'youtube'" class="mt-2">
-      <iframe id="inlineFrameExample"
-              title="Inline Frame Example"
-              src="https://www.youtube.com/embed/GHaAsolqvX4"></iframe>
+    <!--  ютуб  -->
+    <div v-if="block.type === 'youtube'" class="mt-2 relative w-96">
+      <div>
+        <iframe id="inlineFrameExample"
+                v-if="block.value"
+                title="Inline Frame Example"
+                :src="block.value"></iframe>
+      </div>
+
+      <UModal title="Update image link">
+        <UButton icon="material-symbols:edit-outline-rounded" variant="subtle" class="absolute top-5 right-5"
+                 v-if="block.value"/>
+        <template #body>
+          <UInput :value="block.value" class="w-full" @blur="updateContentBlock"/>
+        </template>
+      </UModal>
+
+      <input :id="`block-${block.id}`"
+             class="w-full"
+             v-if="!block.value"
+             placeholder="Link to youtube"
+             @keydown.enter="updateContentBlock"
+             @keydown.esc="store.deleteContentBlock(block.id)"
+             @blur="updateContentBlock"/>
     </div>
 
 
+    <!--  ссылка  -->
     <div class="flex gap-2 w-full items-center"
          v-if="block.type==='link'">
       <UPopover mode="hover" :open-delay="300" :close-delay="300"
@@ -272,6 +307,7 @@ const updateContentBlockFromValue = (event: FlatTreeNode) => {
 
     </div>
 
+    <!--  страница  -->
     <div v-if="block.type === 'page'">
       <UInputMenu v-if="!block.value" placeholder="Start typing or select a page"
                   :items="pagesStore.flatTree"
