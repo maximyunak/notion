@@ -1,11 +1,12 @@
 <script setup lang="ts">
 
+const store = useFileStore()
+
 </script>
 
 <template>
   <div>
-    <NuxtLink to="/adffd">dfa</NuxtLink>
-
+    <SidebarFileTree :nodes="store.fileTree" v-if="store.fileTree" :parent-id="null" />
   </div>
 </template>
 

@@ -46,7 +46,7 @@ const contentStore = useContentStore()
 
     <UDashboardPanel v-if="isMobile">
       <template #header>
-        <UDashboardNavbar class="z-30" :title="contentStore.pageContent?.title" />
+        <UDashboardNavbar class="z-30" :title="contentStore.pageContent?.title ?? 'Home'" />
       </template>
     </UDashboardPanel>
 

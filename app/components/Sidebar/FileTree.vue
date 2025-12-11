@@ -31,6 +31,8 @@ const deletePage = (nodeId: string) => {
 const onDropEnd = (e: any) => {
   store.syncParentIds()
 };
+
+const isMobile = useIsMobile()
 </script>
 
 
@@ -62,7 +64,7 @@ const onDropEnd = (e: any) => {
             <!--    кнопка раскрытия/иконки файла    -->
             <div class="relative flex flex-row items-center">
               <UButton
-                  v-if="hoveredArrow[element.id]"
+                  v-if="hoveredArrow[element.id] || isMobile"
                   class="size-6"
                   variant="subtle"
                   @click.prevent="toggleNode(element)"
@@ -77,7 +79,7 @@ const onDropEnd = (e: any) => {
 
           <!--   кнопки справа   -->
           <Transition mode="out-in">
-            <div class="flex items-center gap- max-h-6 absolute right-2" v-if="hoveredArrow[element.id]">
+            <div class="flex items-center gap-1 max-h-6 absolute right-2" v-if="hoveredArrow[element.id] || isMobile">
               <UButton variant="subtle" icon="material-symbols:delete" @click.prevent="deletePage(element.id)"/>
 
               <!--   создание   -->

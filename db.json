@@ -19,12 +19,6 @@
       "order": 3
     },
     {
-      "id": "f96b",
-      "parentId": null,
-      "label": "1",
-      "order": 2
-    },
-    {
       "id": "1e01",
       "label": "5gdfds",
       "parentId": null,
@@ -35,12 +29,6 @@
       "parentId": "f96b",
       "label": "Untitled",
       "order": 1
-    },
-    {
-      "id": "276e",
-      "parentId": "f96b",
-      "label": "Untitled2gf",
-      "order": 0
     }
   ],
   "content": [
@@ -215,11 +203,6 @@
           "value": ""
         }
       ]
-    },
-    {
-      "id": "f96b",
-      "title": "1",
-      "blocks": []
     },
     {
       "id": "1e01",
@@ -467,62 +450,6 @@
       "id": "d71c",
       "title": "Untitled",
       "blocks": []
-    },
-    {
-      "id": "276e",
-      "title": "Untitled2gf",
-      "blocks": [
-        {
-          "type": "h2",
-          "id": "r52drp",
-          "value": "fdssfdавыfsd"
-        },
-        {
-          "type": "text",
-          "id": "lw4uce",
-          "value": "fdsdsffds"
-        },
-        {
-          "type": "text",
-          "id": "yqnjcc",
-          "value": "ваывfds"
-        },
-        {
-          "type": "h5",
-          "id": "x0p0eu",
-          "value": "аывыав"
-        },
-        {
-          "type": "h2",
-          "id": "rzlsym",
-          "value": "fdssfdfdsdfs"
-        },
-        {
-          "type": "youtube",
-          "id": "4b8db7",
-          "value": "https://www.youtube.com/embed/b-GvQaW-hvY"
-        },
-        {
-          "type": "youtube",
-          "id": "edevwj",
-          "value": "https://www.youtube.com/embed/BAk2WI3uR8w"
-        },
-        {
-          "type": "youtube",
-          "id": "fbxhva",
-          "value": "https://www.youtube.com/embed/BAk2WI3uR8w"
-        },
-        {
-          "type": "youtube",
-          "id": "lc1ud",
-          "value": "https://www.youtube.com/embed/1oO9VpyCO2w"
-        },
-        {
-          "type": "youtube",
-          "id": "edgwd",
-          "value": "https://www.youtube.com/embed/1oO9VpyCO2w"
-        }
-      ]
     }
   ]
 }

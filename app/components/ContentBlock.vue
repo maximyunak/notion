@@ -220,7 +220,7 @@ const selectedTextType = ref(textItems.find(el => el.label.toLowerCase() === blo
 </script>
 
 <template>
-  <div @mouseenter="isHover = true" @mouseleave="isHover = false" class="flex items-center relative gap-2">
+  <div @mouseenter="isHover = true" @mouseleave="isHover = false" class="flex items-center relative gap-2 max-w-full overflow-x-auto">
 
     <!--  меню слева  -->
     <div v-if="!isMobile" :class="isHover ? 'opacity-100' : 'opacity-0'" class="flex gap-2 w-18">
