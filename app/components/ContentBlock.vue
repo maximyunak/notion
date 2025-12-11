@@ -4,6 +4,7 @@ import type {FlatTreeNode} from "~/types/TreeNode";
 import type {DropDownItem} from "~/types/DropDown";
 import {YouTubeGetID} from "~/utils/get-embed-youtube";
 import {getHttpLink} from "~/utils/http-link";
+import {isMobile} from "~/composables/isMobile";
 
 const {block} = defineProps<{ block: ContentBlock }>();
 const emit = defineEmits<{
@@ -213,14 +214,16 @@ const textItems = [
   },
 ]
 
+const isMobile = useIsMobile()
 const selectedTextType = ref(textItems.find(el => el.label.toLowerCase() === block.type)?.label)
+
 </script>
 
 <template>
   <div @mouseenter="isHover = true" @mouseleave="isHover = false" class="flex items-center relative gap-2">
 
     <!--  меню слева  -->
-    <div :class="isHover ? 'opacity-100' : 'opacity-0'" class="flex gap-2 w-18">
+    <div v-if="!isMobile" :class="isHover ? 'opacity-100' : 'opacity-0'" class="flex gap-2 w-18">
       <DropDown :items="addItems" icon="material-symbols:add-2"/>
       <DropDown :items="optionItems" class="drag-handle" icon="teenyicons:drag-vertical-solid"/>
     </div>
@@ -355,6 +358,10 @@ div > *:not(button, div, a) {
 iframe {
   width: 700px;
   height: 200px;
+  @media (max-width: 520px) {
+    width: auto;
+    height: auto;
+  }
 }
 
 h1 {
@@ -390,6 +397,66 @@ h6 {
 p {
   font-size: 16px;
   line-height: 1.6;
+}
+
+@media (max-width: 1023px) {
+  h1 {
+    font-size: 32px;
+  }
+
+  h2 {
+    font-size: 30px;
+  }
+
+  h3 {
+    font-size: 24px;
+  }
+
+  h4 {
+    font-size: 20px;
+  }
+
+  h5 {
+    font-size: 17px;
+  }
+
+  h6 {
+    font-size: 15px;
+  }
+
+  p {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 640px) {
+  h1 {
+    font-size: 26px;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  h3 {
+    font-size: 20px;
+  }
+
+  h4 {
+    font-size: 18px;
+  }
+
+  h5 {
+    font-size: 16px;
+  }
+
+  h6 {
+    font-size: 15px;
+  }
+
+  p {
+    font-size: 14px;
+  }
 }
 
 a.link {

@@ -90,7 +90,7 @@ const onDropEnd = (e: any) => {
           <div class="ml-3 border-s border-default isolate">
             <SidebarFileTree :nodes="element.children"
                              :parentId="element.id"/>
-            <span v-if="element.children.length === 0" class="text-sm pl-8 text-muted block pb-1">No pages inside</span>
+            <span v-if="element.children.length === 0" class="text-sm pl-8 text-muted block pb-1 truncate">No pages inside</span>
           </div>
         </Transition>
       </div>

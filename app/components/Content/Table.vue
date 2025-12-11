@@ -30,6 +30,7 @@ onMounted(() => {
 <template>
   <div>
     <active-table
+        class="overflow-x-auto"
         ref="tableRef"
         :data="data"
         :table-style="tableStyle"

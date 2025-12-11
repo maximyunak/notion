@@ -48,6 +48,7 @@ useHead(() => ({
       ? `Notion | ${store.pageContent?.title || 'Page'}`
       : 'Notion | Page'
 }))
+const isMobile = useIsMobile()
 </script>
 
 <template>
@@ -56,9 +57,11 @@ useHead(() => ({
         @blur="store.savePageTitle"
         v-model="titleValue"
         placeholder="Enter page title"
-        class="cursor-text break-words whitespace-pre-wrap text-5xl font-bold pl-18"/>
+        class="cursor-text break-words whitespace-pre-wrap text-5xl font-bold" :class="{
+          'pl-18' : !isMobile,
+        }"/>
 
-    <div class="w-full h-full mt-10">
+    <div class="w-full h-full mt-5 sm:mt-10">
       <draggable
           animation="150"
           ghost-class="opacity-50"
