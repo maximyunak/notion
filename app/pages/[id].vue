@@ -57,7 +57,7 @@ const isMobile = useIsMobile()
         @blur="store.savePageTitle"
         v-model="titleValue"
         placeholder="Enter page title"
-        class="cursor-text break-words whitespace-pre-wrap text-5xl font-bold" :class="{
+        class="cursor-text break-words whitespace-pre-wrap text-5xl z-50 font-bold" :class="{
           'pl-18' : !isMobile,
         }"/>
 

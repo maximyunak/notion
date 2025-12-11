@@ -18,13 +18,13 @@ const hoveredArrow = ref<Record<string, boolean>>({})
 const createPage = async (parentId: string) => {
   const newPageId = await store.createPage({}, parentId)
 
-  router.push(`/${newPageId}`)
+  await router.push(`/${newPageId}`)
 }
 
-const deletePage = (nodeId: string) => {
-  store.deletePage(nodeId)
+const deletePage = async (nodeId: string) => {
+  await store.deletePage(nodeId)
   if (!findNode(route.params.id as string, store.fileTree)) {
-    router.push('/');
+    await router.push('/');
   }
 }
 
