@@ -28,9 +28,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
+  <div class="overflow-x-auto">
     <active-table
-        class="overflow-x-auto"
         ref="tableRef"
         :data="data"
         :table-style="tableStyle"
