@@ -13,10 +13,9 @@
       "order": 1
     },
     {
-      "id": "d71c",
-      "parentId": "f96b",
-      "label": "Untitled",
-      "order": 1
+      "id": "ea94",
+      "label": "youtube",
+      "order": 2
     }
   ],
   "content": [
@@ -352,9 +351,15 @@
       "blocks": []
     },
     {
-      "id": "d71c",
-      "title": "Untitled",
-      "blocks": []
+      "id": "ea94",
+      "title": "youtube",
+      "blocks": [
+        {
+          "type": "youtube",
+          "id": "73iwmt",
+          "value": "https://www.youtube.com/embed/_Gn-2ip4kMw"
+        }
+      ]
     }
   ]
 }
